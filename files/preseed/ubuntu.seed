@@ -1,0 +1,129 @@
+# Enable extras.ubuntu.com.
+d-i	apt-setup/extras	boolean true
+# Install the Ubuntu desktop.
+tasksel	tasksel/first	multiselect ubuntu-desktop
+# On live DVDs, don't spend huge amounts of time removing substantial
+# application packages pulled in by language packs. Given that we clearly
+# have the space to include them on the DVD, they're useful and we might as
+# well keep them installed.
+ubiquity	ubiquity/keep-installed	string icedtea6-plugin openoffice.org
+d-i  base-installer/kernel/altmeta   string hwe-18.04
+
+
+# Automatic Installation
+d-i	auto-install/enable boolean true
+d-i	debconf/priority select critical
+
+# Installer
+d-i 	debian-installer/locale string de_DE
+
+# Locale and keymap
+d-i	debian-installer/locale string de_DE.UTF-8
+d-i	localechooser/supported-locales multiselect de_DE.UTF-8
+d-i	console-setup/ask_detect boolean false
+d-i	keyboard-configuration/xkb-keymap select de
+d-i	keyboard-configuration/layoutcode string de
+d-i	console-setup/layoutcode string de
+
+# clock and time zone
+d-i	clock-setup/utc boolean true
+d-i	time/zone string Europe/Berlin
+d-i	clock-setup/ntp boolean true
+d-i	clock-setup/ntp-server string ntp.ubuntu.com
+
+# User configuration
+d-i	passwd/user-fullname string schule
+d-i	passwd/username string schule
+d-i	passwd/user-password-crypted password $6$mzYTK1/8GB/8wON$QF5UDc.KYd9Hv/kR8s7j7yZo/Wheya4rNGBJ5kJd8ryplNEj.u5QUo.IkY07ZOBboEn3X3N5c2buD.DOasuNn1
+d-i	user-setup/allow-password-weak boolean true
+
+# Low Level Format
+d-i s390-dasd/auto-format boolean true
+d-i s390-dasd/force-format boolean true
+
+### Do NOT install on the USB stick(!)
+# taken from https://github.com/core-process/linux-unattended-installation/blob/master/ubuntu/18.04/custom/preseed.cfg
+#
+# The Debian installer will install on the first disk it finds which can
+# sometimes be the USB stick itself. Work around this by rolling our own auto
+# detect logic which disallows installing on USB devices.
+d-i partman/early_command string \
+  USBDEV_LIST="$(mktemp)"; \
+  list-devices usb-partition | sed "s/\(.*\)./\1/" > "$USBDEV_LIST"; \
+  BOOTDEV="$(list-devices disk | grep -vf "$USBDEV_LIST" | head -n 1)"; \
+  debconf-set partman-auto/disk "$BOOTDEV"; \
+  debconf-set grub-installer/bootdev "$BOOTDEV";
+#  while /bin/true; do sleep 0.01; rm -f /target/etc/grub.d/30_os-prober; done &
+
+### Partitioning
+d-i preseed/early_command string umount /media || true
+d-i partman-auto/method string lvm
+d-i partman-auto-lvm/guided_size string max
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+d-i partman-auto-lvm/new_vg_name string main
+d-i partman-md/device_remove_md boolean true
+d-i partman-md/confirm boolean true
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
+d-i partman-basicmethods/method_only boolean false
+
+### GPT
+d-i partman-basicfilesystems/choose_label string gpt
+d-i partman-basicfilesystems/default_label string gpt
+d-i partman-partitioning/choose_label string gpt
+d-i partman-partitioning/default_label string gpt
+d-i partman/choose_label string gpt
+d-i partman/default_label string gpt
+
+### EFI
+d-i partman-efi/non_efi_system boolean true
+
+### Grub
+d-i grub-installer/only_debian boolean true
+d-i grub-installer/with_other_os boolean true
+
+### Disk layout
+
+# Keep 25% free space
+d-i partman-auto/expert_recipe string         \
+  boot-root ::                                \
+    1 1 1 free                                \
+      $bios_boot{ }                           \
+      method{ biosgrub }                      \
+    .                                         \
+    256 256 256 fat32                         \
+      $primary{ }                             \
+      $iflabel{ gpt }                         \
+      $reusemethod{ }                         \
+      method{ efi } format{ }                 \
+      mountpoint{ /boot/efi }                 \
+    .                                         \
+    512 512 512 ext4                          \
+      $primary{ }                             \
+      $bootable{ }                            \
+      method{ format } format{ }              \
+      use_filesystem{ } filesystem{ ext4 }    \
+      mountpoint{ /boot }                     \
+    .                                         \
+    1024 102400000 1000000000 ext4            \
+      $lvmok{ }                               \
+      method{ format } format{ }              \
+      use_filesystem{ } filesystem{ ext4 }    \
+      mountpoint{ / }                         \
+      lv_name{ root }                         \
+    .                                         \
+    200% 200% 200% linux-swap                 \
+      $lvmok{ }                               \
+      method{ swap } format{ }                \
+      lv_name{ swap }                         \
+    .
+
+# auto-reboot
+ubiquity	ubiquity/reboot boolean true
+
+# non-free drivers
+d-i     hw-detect/load_firmware boolean true
