@@ -33,7 +33,7 @@ done
 mkdir artifacts/
 ## install needed software
 echo "installing software requirements"
-apt update -y && apt-get install -yq snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakeroot fakechroot
+apt update -y && apt-get install -yq snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakeroot fakechroot syslinux-utils
 ## download iso
 if [ ! -f "${ISO_FILENAME}" ]
 then
@@ -110,3 +110,5 @@ rm -rf md5sum.txt
 find -type f -print0 | xargs -0 md5sum | grep -v isolinux/boot.cat | tee md5sum.txt
 
 fakeroot mkisofs -D -r -V "${IMAGE_NAME}" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o ../../artifacts/${IMAGE_NAME} .
+
+isohybrid ../../artifacts/${IMAGE_NAME}
