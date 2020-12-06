@@ -16,21 +16,21 @@ ISO_MOUNT_DIR="${BUILD_DIR}/extracted-iso"
 SQUASHFS_EXTRACTED_DIR="${BUILD_DIR}/squashfs"
 ISO_FILENAME="cached/ubuntu-20.04.1-desktop-amd64.iso"
 IMAGE_NAME="ubuntu-20.04.1-${CI_COMMIT_SHORT_SHA}.iso"
+ARTIFACTS_DIR="$(pwd)/artifacts"
 
 
 
 
 # prepare env
 
-for directory in $BUILD_DIR $ISO_EXTRACTED_DIR $ISO_MOUNT_DIR cached/
+for directory in $BUILD_DIR $ISO_EXTRACTED_DIR $ISO_MOUNT_DIR cached/ artifacts/
 do
-	if [ ! -d "$directory" ]
+	if [ ! -e "$directory" ]
 	then
 		echo creating $directory
 		mkdir $directory
 	fi
 done
-mkdir artifacts/
 ## install needed software
 echo "installing software requirements"
 apt update -y && apt-get install -yq snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakeroot fakechroot syslinux-utils
@@ -65,6 +65,7 @@ fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y unive
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y multiverse
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt update -y
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y gimp vlc mumble enigmail keepass2 # geogebra inkscape krita geogebra obs-studio  audacity  geany openscad pwgen sl gawk mawk
+fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt clean
 #
 #
 #
@@ -109,6 +110,6 @@ pushd ${ISO_EXTRACTED_DIR}
 rm -rf md5sum.txt
 find -type f -print0 | xargs -0 md5sum | grep -v isolinux/boot.cat | tee md5sum.txt
 
-fakeroot mkisofs -D -r -V "${IMAGE_NAME}" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o ../../artifacts/${IMAGE_NAME} .
+fakeroot mkisofs -D -r -V "${IMAGE_NAME}" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o ${ARTIFACTS_DIR}/${IMAGE_NAME} .
 
-isohybrid ../../artifacts/${IMAGE_NAME}
+isohybrid ${ARTIFACTS_DIR}/${IMAGE_NAME}
