@@ -13,3 +13,16 @@ The (hopefully soon) official release of the heyalter ubuntu
     - d-i s390-dasd/auto-format boolean true
     - d-i s390-dasd/force-format boolean true
 
+
+
+## Local build scripts
+
+To build the iso image locally you can use the commands below:
+
+```bash
+# run the build in a docker container
+docker run -it --rm -v ${PWD}:/heyalter -w "/heyalter" --name heyalter-iso ubuntu:focal ./build-local.sh
+
+# setup everything and get a shell in a container
+docker run -it --rm -v ${PWD}:/heyalter -w "/heyalter" --name heyalter-iso ubuntu:focal
+```
