@@ -18,6 +18,9 @@ ISO_FILENAME="cached/ubuntu-20.04.1-desktop-amd64.iso"
 IMAGE_NAME="ubuntu-20.04.1-${CI_COMMIT_SHORT_SHA}.iso"
 ARTIFACTS_DIR="$(pwd)/artifacts"
 
+export DEBIAN_FRONTEND="noninteractive"
+export TZ="Europe/Berlin"
+
 
 
 
