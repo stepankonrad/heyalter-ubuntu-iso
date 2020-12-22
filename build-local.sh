@@ -7,6 +7,7 @@ export CI_COMMIT_SHORT_SHA="$(git rev-parse --short HEAD)"
 # we need to put `build` in the container flesystem  as unsquashfs throws errors, if it has to work across filesystems
 cd /heyalter
 mkdir /tmp/build
+
 if [ ! -L /heyalter/build ]
 then
 	ln -s /tmp/build /heyalter/build
@@ -14,6 +15,7 @@ fi
 
 # call the build script
 ./build.sh
+./build_usb_after_install_stick.sh
 
 #cleanup
 rm -r /tmp/build

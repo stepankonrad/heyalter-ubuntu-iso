@@ -9,6 +9,7 @@ build_iso:
   image: ubuntu:focal
   script:
     - ./build.sh
+    - ./build_usb_after_install_stick.sh
   artifacts:
     paths:
       - artifacts/
