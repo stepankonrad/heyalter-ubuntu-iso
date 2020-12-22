@@ -26,3 +26,11 @@ docker run -it --rm -v ${PWD}:/heyalter -w "/heyalter" --name heyalter-iso ubunt
 # setup everything and get a shell in a container
 docker run -it --rm -v ${PWD}:/heyalter -w "/heyalter" --name heyalter-iso ubuntu:focal
 ```
+
+## USB Stick for plain Ubuntu Installations
+- burn heyalter_post_install_plain_ubuntu.iso to an usb stick
+- plug it to a fresh installed plain ubuntu box
+- open the "heyalter" volume
+- right click: "In Terminal öffnen"
+- type "./setup-lokal.sh"
+- accept pop-up terminal with root password (schule)
