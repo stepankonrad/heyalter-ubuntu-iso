@@ -37,12 +37,16 @@ cp -R usb_after_install/* ${BUILD_DIR}
 cp files/homeschule/.config/systemd/user/heyalter.service ${BUILD_DIR}/.config/systemd/user/heyalter.service
 
 chmod +x ${BUILD_DIR}/setup_lokal.sh
+chmod +x ${BUILD_DIR}/_install_all_snaps.sh
 chown -R 1000:1000 ${BUILD_DIR}/setup_lokal.sh
 chmod -R 755 ${BUILD_DIR}/.config/
 
-snap download chromium --target-directory ${BUILD_DIR}
-mv ${BUILD_DIR}/chromium*.snap ${BUILD_DIR}/chromium.snap
-mv ${BUILD_DIR}/chromium*.assert ${BUILD_DIR}/chromium.assert
+#snap download chromium --target-directory ${BUILD_DIR}
+#mv ${BUILD_DIR}/chromium*.snap ${BUILD_DIR}/chromium.snap
+#mv ${BUILD_DIR}/chromium*.assert ${BUILD_DIR}/chromium.assert
+
+# Download Snaps
+./_download_snaps.sh ${BUILD_DIR}
 
 chown -R 1000:1000 ${BUILD_DIR}
 

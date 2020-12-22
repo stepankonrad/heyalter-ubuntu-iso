@@ -14,7 +14,7 @@ mkdir ${HOME}/Bilder
 cp ./Bilder/los_gehts.png ${HOME}/Bilder/los_gehts.png
 
 # Install Chrome
-gnome-terminal --wait -- bash -c "sudo snap ack ./chromium.assert; sudo snap install ./chromium.snap;"
+gnome-terminal --wait -- bash -c "sudo ./_install_all_snaps.sh;"
 
 #mkdir -p ${HOME}/.config/systemd/user;
 # cp -R ./.config/systemd/user ${HOME}/.config/systemd/user

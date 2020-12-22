@@ -92,11 +92,12 @@ ls -la ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/systemd/
 ls -la ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/systemd/user/
 chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/Schreibtisch/setup.sh
 chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/Schreibtisch/cleanup.sh
+chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/_install_all_snaps.sh
 chmod -R 755 ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/
 
-snap download chromium --target-directory ${SQUASHFS_EXTRACTED_DIR}/home/schule/
-mv ${SQUASHFS_EXTRACTED_DIR}/home/schule/chromium*.snap ${SQUASHFS_EXTRACTED_DIR}/home/schule/chromium.snap
-mv ${SQUASHFS_EXTRACTED_DIR}/home/schule/chromium*.assert ${SQUASHFS_EXTRACTED_DIR}/home/schule/chromium.assert
+
+# Download Snaps
+./_download_snaps.sh ${SQUASHFS_EXTRACTED_DIR}/home/schule
 
 chown -R 1000:1000 ${SQUASHFS_EXTRACTED_DIR}/home/schule/
 

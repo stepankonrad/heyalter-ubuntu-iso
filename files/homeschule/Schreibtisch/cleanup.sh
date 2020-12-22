@@ -7,8 +7,9 @@ exit 2
 fi
 
 rm /home/schule/setup_done
-rm /home/schule/chromium.snap
-rm /home/schule/chromium.assert
+rm /home/schule/*.snap
+rm /home/schule/*.assert
+rm /home/schule/_install_all_snaps.sh
 
 rm /home/schule/Schreibtisch/setup.sh
 rm /home/schule/Schreibtisch/cleanup.sh
