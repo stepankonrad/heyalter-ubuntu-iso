@@ -15,7 +15,6 @@ fi
 
 # call the build script
 ./build.sh
-./build_usb_after_install_stick.sh
 
 #cleanup
 rm -r /tmp/build

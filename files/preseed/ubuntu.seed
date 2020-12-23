@@ -122,8 +122,15 @@ d-i partman-auto/expert_recipe string         \
       lv_name{ swap }                         \
     .
 
-# auto-reboot
-ubiquity	ubiquity/reboot boolean true
 
 # non-free drivers
 d-i     hw-detect/load_firmware boolean true
+
+# copy snaps
+d-i preseed/late_command string \
+ cp /snaps/*.assert /target/home/schule/snaps/; \
+ cp /snaps/*.snap /target/home/schule/snaps/;
+
+# auto-reboot
+ubiquity	ubiquity/reboot boolean true
+

@@ -8,6 +8,12 @@ unset IFS
 SNAP_ASSERTS=$(printf "%s " "${SNAP_ASSERTS_ARR[@]}")
 SNAPS=$(printf "%s " "${SNAPS_ARR[@]}")
 
+sudo snap ack core.assert
+sudo snap install core.snap
+
+sudo snap ack core20.assert
+sudo snap install core20.snap
+
 sudo snap ack gnome-3-28-1804.assert
 sudo snap install gnome-3-28-1804.snap
 

@@ -86,18 +86,34 @@ mkdir -p ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/systemd/user/
 cp -R files/homeschule/* ${SQUASHFS_EXTRACTED_DIR}/home/schule/
 cp files/homeschule/.config/gnome-initial-setup-done ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/gnome-initial-setup-done
 cp files/homeschule/.config/systemd/user/heyalter.service ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/systemd/user/heyalter.service
+mkdir -p ${SQUASHFS_EXTRACTED_DIR}/home/schule/snaps/
+cp files/homeschule/snaps/_install_all_snaps.sh ${SQUASHFS_EXTRACTED_DIR}/home/schule/snaps/_install_all_snaps.sh
+
 
 ls -la ${SQUASHFS_EXTRACTED_DIR}/home/schule/
 ls -la ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/systemd/
 ls -la ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/systemd/user/
 chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/Schreibtisch/setup.sh
 chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/Schreibtisch/cleanup.sh
-chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/_install_all_snaps.sh
+chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/snaps/_install_all_snaps.sh
 chmod -R 755 ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/
 
+#After Install Script
+mkdir -p ${ISO_EXTRACTED_DIR}/homeschule/.config/systemd/user/
+cp files/homeschule/.config/systemd/user/heyalter.service ${ISO_EXTRACTED_DIR}/homeschule/.config/systemd/user/heyalter.service
+
+mkdir -p ${ISO_EXTRACTED_DIR}/homeschule/Bilder/
+cp -R files/homeschule/Bilder/* ${ISO_EXTRACTED_DIR}/homeschule/Bilder/
+
+cp usb_after_install/* ${ISO_EXTRACTED_DIR}
+chmod +x ${ISO_EXTRACTED_DIR}/setup_lokal.sh
+chown -R 1000:1000 ${ISO_EXTRACTED_DIR}/setup_lokal.sh
 
 # Download Snaps
-./_download_snaps.sh ${SQUASHFS_EXTRACTED_DIR}/home/schule
+mkdir -p ${ISO_EXTRACTED_DIR}/snaps
+./_download_snaps.sh ${ISO_EXTRACTED_DIR}/snaps
+cp -R ${ISO_EXTRACTED_DIR}/snaps/* ${SQUASHFS_EXTRACTED_DIR}/home/schule/snaps/
+cp files/homeschule/snaps/_install_all_snaps.sh ${ISO_EXTRACTED_DIR}/snaps/_install_all_snaps.sh
 
 chown -R 1000:1000 ${SQUASHFS_EXTRACTED_DIR}/home/schule/
 

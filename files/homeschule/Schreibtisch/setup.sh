@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# einstellen der favoriten
-# xmessage -center Hallo
 
 # anzeigen der systemparameter
 
@@ -10,9 +8,9 @@ zenity --info --text "$(lshw -C memory)\n------------------------------------\nA
 snap install /home/schule/chromium.snap
 
 # Rechte der kopierten Dateien fixen
-#gnome-terminal --wait -- bash -c "sudo chown -R schule:schule /home/schule/; sudo snap ack /home/schule/chromium.assert; sudo snap install /home/schule/chromium.snap"
-gnome-terminal --wait -- bash -c "sudo chown -R schule:schule /home/schule/; cd /home/schule/; sudo ./_install_all_snaps.sh;"
+gnome-terminal --wait -- bash -c "sudo chown -R schule:schule /home/schule/; cd /home/schule/snaps/; sudo ./_install_all_snaps.sh;"
 
+# einstellen der favoriten
 dconf write /org/gnome/shell/favorite-apps "['chromium_chromium.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'libreoffice-writer.desktop', 'libreoffice-calc.desktop', 'libreoffice-impress.desktop', 'org.gnome.Software.desktop']"
 
 
