@@ -1,26 +1,19 @@
 #!/bin/bash
 
-# einstellen der favoriten
-# xmessage -center Hallo
-
 # anzeigen der systemparameter
 
 zenity --info --text "$(lshw -C memory)\n------------------------------------\nAnzahl Kerne: $(nproc)\n------------------------------------\n$(lshw -C cpu)" --width 1024
 
 mkdir -p ${HOME}/.config/systemd/user
-cp -R ./.config/systemd/user/* ${HOME}/.config/systemd/user
+cp -R ./homeschule/.config/systemd/user/* ${HOME}/.config/systemd/user
 
 mkdir ${HOME}/Bilder
-cp ./Bilder/los_gehts.png ${HOME}/Bilder/los_gehts.png
+cp ./homeschule/Bilder/los_gehts.png ${HOME}/Bilder/los_gehts.png
 
 # Install Chrome
-gnome-terminal --wait -- bash -c "sudo snap ack ./chromium.assert; sudo snap install ./chromium.snap;"
+gnome-terminal --wait -- bash -c "cd ./snaps/; sudo ./_install_all_snaps.sh;"
 
-#mkdir -p ${HOME}/.config/systemd/user;
-# cp -R ./.config/systemd/user ${HOME}/.config/systemd/user
-# mkdir -p ${HOME}/Bilder;
-# cp ./Bilder/los_gehts.png ${HOME}/Bilder/los_gehts.png;
-
+# einstellen der favoriten
 dconf write /org/gnome/shell/favorite-apps "['chromium_chromium.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'libreoffice-writer.desktop', 'libreoffice-calc.desktop', 'libreoffice-impress.desktop', 'org.gnome.Software.desktop']"
 
 
