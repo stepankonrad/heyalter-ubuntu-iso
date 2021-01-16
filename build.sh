@@ -15,7 +15,7 @@ BUILD_DIR="build"
 ISO_EXTRACTED_DIR="${BUILD_DIR}/extracted-iso"
 ISO_MOUNT_DIR="${BUILD_DIR}/extracted-iso"
 SQUASHFS_EXTRACTED_DIR="${BUILD_DIR}/squashfs"
-ISO_FILENAME="cached/ubuntu-20.04.1-desktop-amd64.iso"
+ISO_FILENAME="cached/20210116_focal-desktop-amd64.iso"
 IMAGE_NAME="ubuntu-20.04.1-${CI_COMMIT_SHORT_SHA}.iso"
 ARTIFACTS_DIR="$(pwd)/artifacts"
 
