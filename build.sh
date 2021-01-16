@@ -9,7 +9,8 @@ fi
 # define variables
 
 OUTPUT_FILENAME="output.iso"
-DOWNLOAD_URL="https://releases.ubuntu.com/20.04.1/ubuntu-20.04.1-desktop-amd64.iso"
+#DOWNLOAD_URL="https://releases.ubuntu.com/20.04.1/ubuntu-20.04.1-desktop-amd64.iso"
+DOWNLOAD_URL="https://cdimage.ubuntu.com/focal/daily-live/20210116/focal-desktop-amd64.iso" #Daily build with 5.8 kernel
 BUILD_DIR="build"
 ISO_EXTRACTED_DIR="${BUILD_DIR}/extracted-iso"
 ISO_MOUNT_DIR="${BUILD_DIR}/extracted-iso"
