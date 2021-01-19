@@ -22,6 +22,8 @@ gsettings set org.gnome.desktop.background picture-uri 'file:///home/schule/Bild
 
 cheese
 
+eject
+
 chromium
 
 touch /home/schule/setup_done
