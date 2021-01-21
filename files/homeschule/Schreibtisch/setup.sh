@@ -5,8 +5,6 @@
 
 zenity --info --text "$(lshw -C memory)\n------------------------------------\nAnzahl Kerne: $(nproc)\n------------------------------------\n$(lshw -C cpu)" --width 1024
 
-snap install /home/schule/chromium.snap
-
 # Rechte der kopierten Dateien fixen
 gnome-terminal --wait -- bash -c "sudo chown -R schule:schule /home/schule/; cd /home/schule/snaps/; sudo ./_install_all_snaps.sh;"
 

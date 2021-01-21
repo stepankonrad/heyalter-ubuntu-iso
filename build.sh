@@ -9,12 +9,13 @@ fi
 # define variables
 
 OUTPUT_FILENAME="output.iso"
-DOWNLOAD_URL="https://releases.ubuntu.com/20.04.1/ubuntu-20.04.1-desktop-amd64.iso"
+#DOWNLOAD_URL="https://releases.ubuntu.com/20.04.1/ubuntu-20.04.1-desktop-amd64.iso"
+DOWNLOAD_URL="https://cdimage.ubuntu.com/focal/daily-live/20210120/focal-desktop-amd64.iso" #Daily build with 5.8 kernel
 BUILD_DIR="build"
 ISO_EXTRACTED_DIR="${BUILD_DIR}/extracted-iso"
 ISO_MOUNT_DIR="${BUILD_DIR}/extracted-iso"
 SQUASHFS_EXTRACTED_DIR="${BUILD_DIR}/squashfs"
-ISO_FILENAME="cached/ubuntu-20.04.1-desktop-amd64.iso"
+ISO_FILENAME="cached/20210120_focal-desktop-amd64.iso"
 IMAGE_NAME="ubuntu-20.04.1-${CI_COMMIT_SHORT_SHA}.iso"
 ARTIFACTS_DIR="$(pwd)/artifacts"
 
@@ -67,8 +68,12 @@ echo "installing software inside chroot"
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y universe
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y multiverse
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt update -y
-fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y gimp vlc mumble enigmail keepass2 # geogebra inkscape krita geogebra obs-studio  audacity  geany openscad pwgen sl gawk mawk
+#fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y gimp vlc mumble enigmail keepass2 # geogebra inkscape krita geogebra obs-studio  audacity  geany openscad pwgen sl gawk mawk
+fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y gimp vlc mumble enigmail keepass2 audacity geany geogebra geogebra obs-studio openscad krita # gawk mawk  #
+fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y vim gparted pwgen sl neovim # gawk mawk
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt clean
+
+
 #
 #
 #
@@ -112,7 +117,7 @@ chown -R 1000:1000 ${ISO_EXTRACTED_DIR}/setup_lokal.sh
 # Download Snaps
 mkdir -p ${ISO_EXTRACTED_DIR}/snaps
 ./_download_snaps.sh ${ISO_EXTRACTED_DIR}/snaps
-cp -R ${ISO_EXTRACTED_DIR}/snaps/* ${SQUASHFS_EXTRACTED_DIR}/home/schule/snaps/
+#cp -R ${ISO_EXTRACTED_DIR}/snaps/* ${SQUASHFS_EXTRACTED_DIR}/home/schule/snaps/
 cp files/homeschule/snaps/_install_all_snaps.sh ${ISO_EXTRACTED_DIR}/snaps/_install_all_snaps.sh
 
 chown -R 1000:1000 ${SQUASHFS_EXTRACTED_DIR}/home/schule/
