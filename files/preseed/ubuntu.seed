@@ -82,6 +82,9 @@ d-i partman/choose_partition select finish
 d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
 
+# non-free drivers
+d-i hw-detect/load_firmware boolean true
+
 # User configuration
 d-i	passwd/user-fullname string schule
 d-i	passwd/username string schule
@@ -107,14 +110,8 @@ d-i grub-installer/only_debian boolean true
 # OS, which is less safe as it might not be able to boot that other OS.
 d-i grub-installer/with_other_os boolean true
 
-# non-free drivers
-d-i     hw-detect/load_firmware boolean true
-
 # copy snaps
-d-i preseed/late_command string \
- cp /snaps/*.assert /target/home/schule/snaps/; \
- cp /snaps/*.snap /target/home/schule/snaps/;
-
+ubiquity    ubiquity/success_command string cp /cdrom/snaps/*.assert /target/home/schule/snaps/ && cp /cdrom/snaps/*.snap /target/home/schule/snaps/
 # auto-reboot
 ubiquity	ubiquity/reboot boolean true
 

@@ -25,8 +25,10 @@ done
 
 for snap2install in $SNAPS
 do
-	echo snap install $snap2install
-	sudo snap install $snap2install
+  if [ $snap2install != "./skype.snap" ]; then
+    echo snap install $snap2install
+	  sudo snap install $snap2install
+  fi
 done
 
 sudo snap install --classic ./skype.snap
