@@ -8,6 +8,7 @@ fi
 
 rm /home/schule/setup_done
 rm -r /home/schule/snaps/
+rm -r /home/schule/desktop-mainline-kernel/
 rm /home/schule/_install_all_snaps.sh
 
 rm /home/schule/Schreibtisch/setup.sh
