@@ -10,12 +10,12 @@ fi
 
 OUTPUT_FILENAME="output.iso"
 #DOWNLOAD_URL="https://releases.ubuntu.com/20.04.1/ubuntu-20.04.1-desktop-amd64.iso"
-DOWNLOAD_URL="https://cdimage.ubuntu.com/focal/daily-live/20210121/focal-desktop-amd64.iso" #Daily build with 5.8 kernel
+DOWNLOAD_URL="https://cdimage.ubuntu.com/focal/daily-live/current/focal-desktop-amd64.iso" #Daily build with 5.8 kernel
 BUILD_DIR="build"
 ISO_EXTRACTED_DIR="${BUILD_DIR}/extracted-iso"
 ISO_MOUNT_DIR="${BUILD_DIR}/extracted-iso"
 SQUASHFS_EXTRACTED_DIR="${BUILD_DIR}/squashfs"
-ISO_FILENAME="cached/20210121_focal-desktop-amd64.iso"
+ISO_FILENAME="cached/$(date +'%Y%m%d')_focal-desktop-amd64.iso"
 IMAGE_NAME="ubuntu-20.04.1-${CI_COMMIT_SHORT_SHA}.iso"
 ARTIFACTS_DIR="$(pwd)/artifacts"
 
