@@ -37,7 +37,7 @@ do
 done
 ## install needed software
 echo "installing software requirements"
-apt update -y && apt-get install -yq git snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakeroot fakechroot syslinux-utils
+apt update -y && apt-get install -yq apt-rdepends git snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakeroot fakechroot syslinux-utils
 ## download iso
 if [ ! -f "${ISO_FILENAME}" ]
 then
@@ -106,6 +106,7 @@ cp files/homeschule/snaps/_install_all_snaps.sh ${SQUASHFS_EXTRACTED_DIR}/home/s
 
 chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/Schreibtisch/setup.sh
 chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/Schreibtisch/cleanup.sh
+chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/54KernelDebs/changeTo54KernelOffline.sh
 chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/snaps/_install_all_snaps.sh
 chmod -R 755 ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/
 
@@ -125,6 +126,16 @@ mkdir -p ${ISO_EXTRACTED_DIR}/snaps
 ./_download_snaps.sh ${ISO_EXTRACTED_DIR}/snaps
 #cp -R ${ISO_EXTRACTED_DIR}/snaps/* ${SQUASHFS_EXTRACTED_DIR}/home/schule/snaps/ --> seed late command
 cp files/homeschule/snaps/_install_all_snaps.sh ${ISO_EXTRACTED_DIR}/snaps/_install_all_snaps.sh
+
+# Download 5.4 Kernel
+mkdir -p ${SQUASHFS_EXTRACTED_DIR}/home/schule/54KernelDebs/
+mkdir -p ${ISO_EXTRACTED_DIR}/54KernelDebs
+pushd ${ISO_EXTRACTED_DIR}/54KernelDebs
+apt-get download $(apt-rdepends linux-image-generic | grep -v "^ " | sed 's/debconf-2.0/debconf/g')
+popd
+cp ${ISO_EXTRACTED_DIR}/54KernelDebs/*.deb ${SQUASHFS_EXTRACTED_DIR}/home/schule/54KernelDebs/
+cp ${SQUASHFS_EXTRACTED_DIR}/home/schule/54KernelDebs/changeTo54KernelOffline.sh ${ISO_EXTRACTED_DIR}/54KernelDebs/
+chmod +x ${ISO_EXTRACTED_DIR}/54KernelDebs/changeTo54KernelOffline.sh
 
 chown -R 1000:1000 ${SQUASHFS_EXTRACTED_DIR}/home/schule/
 

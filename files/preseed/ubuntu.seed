@@ -111,7 +111,7 @@ d-i grub-installer/only_debian boolean true
 d-i grub-installer/with_other_os boolean true
 
 # copy snaps
-ubiquity    ubiquity/success_command string cp /cdrom/snaps/*.assert /target/home/schule/snaps/ && cp /cdrom/snaps/*.snap /target/home/schule/snaps/
+ubiquity    ubiquity/success_command string cp /cdrom/snaps/*.assert /target/home/schule/snaps/ && cp /cdrom/snaps/*.snap /target/home/schule/snaps/ && cp /cdrom/54KernelDebs/*.dep /target/home/schule/54KernelDebs/
 # auto-reboot
 ubiquity	ubiquity/reboot boolean true
 
