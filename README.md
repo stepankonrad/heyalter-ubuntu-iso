@@ -33,3 +33,14 @@ docker run -it --rm -v ${PWD}:/heyalter -w "/heyalter" --name heyalter-iso ubunt
 - right click: "In Terminal öffnen"
 - type "./setup-lokal.sh"
 - accept pop-up terminal with root password (schule)
+
+## Switch to 5.4 Kernel after Installation (i915 Graphic-Driver Bug)
+- if you cannot open any app
+- simply use the command Ctrl + Alt + F3 to switch to terminal mode
+- login in with schule:schule  
+- cd ./54KernelDebs/
+- ./changeTo54KernelOffline.sh
+- type sudo password: schule  
+- if a message appears like "Entfernen des Kernels abbrechen": say: NEIN
+- system will reboot automaticly.
+- everything sould be fine. Start setup.sh as usual
