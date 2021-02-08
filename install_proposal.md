@@ -37,7 +37,6 @@ Installation
   * Bei der Aufforderung den USB-Stick abzuziehen, den USB-Stick abziehen und PC mit Enter neustarten
 * Einloggen mit Passwort `schule`
 * `setup.sh` auf dem Desktop ausführen
-  * Hier wird nochmal nach dem Passwort `schule` gefragt. Dies muss blind eingegeben werden und mit Enter bestätigt werden!
   * Computerspecs prüfen, mind. 4 Gb und 2 CPU-Kerne
   * Webcambild sollte bei vorhandener Webcam sichtbar sein
   * CD Laufwerk schließen, nachdem sie sich automatisch öffnet  

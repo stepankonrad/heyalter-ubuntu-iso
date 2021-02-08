@@ -37,7 +37,7 @@ do
 done
 ## install needed software
 echo "installing software requirements"
-apt update -y && apt-get install -yq apt-rdepends git snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakeroot fakechroot syslinux-utils
+apt update -y && apt-get install -yq apt-rdepends git snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakeroot fakechroot syslinux-utils cargo
 ## download iso
 if [ ! -f "${ISO_FILENAME}" ]
 then
@@ -87,16 +87,22 @@ fixsymlinks() {
 fixsymlinks /usr/bin
 fixsymlinks /etc/alternatives
 
+# Copying our files to the ISO
+cp files/preseed/* ${ISO_EXTRACTED_DIR}/preseed/
+cp files/isolinux.cfg ${ISO_EXTRACTED_DIR}/isolinux/isolinux.cfg
 
-mkdir -p ${ISO_EXTRACTED_DIR}/desktop-mainline-kernel
-git clone https://gitli.stratum0.org/heyalter/desktop-mainline-kernel.git ${ISO_EXTRACTED_DIR}/desktop-mainline-kernel
-rm -fR ${ISO_EXTRACTED_DIR}/desktop-mainline-kernel/.git
+# Homedir
+cp -R files/homeschule ${SQUASHFS_EXTRACTED_DIR}/home/schule
+chown -R 1000:1000 ${SQUASHFS_EXTRACTED_DIR}/home/schule
+chmod -R 755 ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/
 
-mkdir -p ${SQUASHFS_EXTRACTED_DIR}/home/schule/desktop-mainline-kernel/
-cp -R ${ISO_EXTRACTED_DIR}/desktop-mainline-kernel/* ${SQUASHFS_EXTRACTED_DIR}/home/schule/desktop-mainline-kernel/
-
-chmod +x ${ISO_EXTRACTED_DIR}/desktop-mainline-kernel/switch_to_mainline_kernel.sh
-chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/desktop-mainline-kernel/switch_to_mainline_kernel.sh
+# Setup scripts
+cp -R setup ${ISO_EXTRACTED_DIR}/
+./tools/bashwrapper/convert.sh ${ISO_EXTRACTED_DIR}/setup/setuproot.sh
+./tools/bashwrapper/convert.sh ${ISO_EXTRACTED_DIR}/setup/cleanuproot.sh
+./tools/bashwrapper/convert.sh ${ISO_EXTRACTED_DIR}/setup/54KernelDebs/changeTo54KernelOffline.sh
+git clone https://gitli.stratum0.org/heyalter/desktop-mainline-kernel.git ${ISO_EXTRACTED_DIR}/setup/desktop-mainline-kernel
+rm -fR ${ISO_EXTRACTED_DIR}/setup/desktop-mainline-kernel/.git
 
 #
 #
@@ -107,52 +113,20 @@ chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/desktop-mainline-kernel/switch_to
 # rm -rf ${SQUASHFS_EXTRACTED_DIR}/{run,dev,proc,sys}
 # mkdir ${SQUASHFS_EXTRACTED_DIR}/{run,dev,proc,sys}
 
-
-cp files/preseed/* ${ISO_EXTRACTED_DIR}/preseed/
-cp files/isolinux.cfg ${ISO_EXTRACTED_DIR}/isolinux/isolinux.cfg
-
-mkdir -p ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/systemd/user/
-cp -R files/homeschule/* ${SQUASHFS_EXTRACTED_DIR}/home/schule/
-cp files/homeschule/.config/gnome-initial-setup-done ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/gnome-initial-setup-done
-cp files/homeschule/.config/systemd/user/heyalter.service ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/systemd/user/heyalter.service
-mkdir -p ${SQUASHFS_EXTRACTED_DIR}/home/schule/snaps/
-cp files/homeschule/snaps/_install_all_snaps.sh ${SQUASHFS_EXTRACTED_DIR}/home/schule/snaps/_install_all_snaps.sh
-
-
-chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/Schreibtisch/setup.sh
-chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/Schreibtisch/cleanup.sh
-chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/54KernelDebs/changeTo54KernelOffline.sh
-chmod +x ${SQUASHFS_EXTRACTED_DIR}/home/schule/snaps/_install_all_snaps.sh
-chmod -R 755 ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/
-
 #After Install Script
-mkdir -p ${ISO_EXTRACTED_DIR}/homeschule/.config/systemd/user/
-cp files/homeschule/.config/systemd/user/heyalter.service ${ISO_EXTRACTED_DIR}/homeschule/.config/systemd/user/heyalter.service
-
-mkdir -p ${ISO_EXTRACTED_DIR}/homeschule/Bilder/
-cp -R files/homeschule/Bilder/* ${ISO_EXTRACTED_DIR}/homeschule/Bilder/
+cp -R files/homeschule ${ISO_EXTRACTED_DIR}/
 
 cp usb_after_install/* ${ISO_EXTRACTED_DIR}
-chmod +x ${ISO_EXTRACTED_DIR}/setup_lokal.sh
-chown -R 1000:1000 ${ISO_EXTRACTED_DIR}/setup_lokal.sh
+chown 1000:1000 ${ISO_EXTRACTED_DIR}/setup_lokal.sh
+
 
 # Download Snaps
-mkdir -p ${ISO_EXTRACTED_DIR}/snaps
-./_download_snaps.sh ${ISO_EXTRACTED_DIR}/snaps
-#cp -R ${ISO_EXTRACTED_DIR}/snaps/* ${SQUASHFS_EXTRACTED_DIR}/home/schule/snaps/ --> seed late command
-cp files/homeschule/snaps/_install_all_snaps.sh ${ISO_EXTRACTED_DIR}/snaps/_install_all_snaps.sh
+./_download_snaps.sh ${ISO_EXTRACTED_DIR}/setup/snaps
 
 # Download 5.4 Kernel
-mkdir -p ${SQUASHFS_EXTRACTED_DIR}/home/schule/54KernelDebs/
-mkdir -p ${ISO_EXTRACTED_DIR}/54KernelDebs
-pushd ${ISO_EXTRACTED_DIR}/54KernelDebs
+pushd ${ISO_EXTRACTED_DIR}/setup/54KernelDebs
 apt-get download $(apt-rdepends linux-image-generic | grep -v "^ " | sed 's/debconf-2.0/debconf/g')
 popd
-cp ${ISO_EXTRACTED_DIR}/54KernelDebs/*.deb ${SQUASHFS_EXTRACTED_DIR}/home/schule/54KernelDebs/
-cp ${SQUASHFS_EXTRACTED_DIR}/home/schule/54KernelDebs/changeTo54KernelOffline.sh ${ISO_EXTRACTED_DIR}/54KernelDebs/
-chmod +x ${ISO_EXTRACTED_DIR}/54KernelDebs/changeTo54KernelOffline.sh
-
-chown -R 1000:1000 ${SQUASHFS_EXTRACTED_DIR}/home/schule/
 
 chmod +w ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} dpkg-query -W --showformat='${Package} ${Version}\n' > ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest

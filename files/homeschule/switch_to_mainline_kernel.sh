@@ -1,0 +1,1 @@
+/opt/setup/desktop-mainline-kernel/switch_to_mainline_kernel.sh

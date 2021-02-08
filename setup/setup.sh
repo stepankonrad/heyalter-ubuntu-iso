@@ -1,17 +1,12 @@
 #!/bin/bash
 
+
 # anzeigen der systemparameter
 
 zenity --info --text "$(lshw -C memory)\n------------------------------------\nAnzahl Kerne: $(nproc)\n------------------------------------\n$(lshw -C cpu)" --width 1024
 
-mkdir -p ${HOME}/.config/systemd/user
-cp -R ./homeschule/.config/systemd/user/* ${HOME}/.config/systemd/user
-
-mkdir ${HOME}/Bilder
-cp ./homeschule/Bilder/los_gehts.png ${HOME}/Bilder/los_gehts.png
-
-# Install snaps
-gnome-terminal --wait -- bash -c "cd setup/snaps/; sudo ./_install_all_snaps.sh;"
+# Rechte der kopierten Dateien fixen
+gnome-terminal --wait -- bash -c "/opt/setup/setuproot.sh"
 
 # einstellen der favoriten
 dconf write /org/gnome/shell/favorite-apps "['chromium_chromium.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'libreoffice-writer.desktop', 'libreoffice-calc.desktop', 'libreoffice-impress.desktop', 'org.gnome.Software.desktop']"
@@ -21,9 +16,10 @@ dconf write /org/gnome/shell/favorite-apps "['chromium_chromium.desktop', 'thund
 systemctl enable --user heyalter.service
 
 # richte das hintergrundbild ein
-gsettings set org.gnome.desktop.background picture-uri "file://${HOME}/Bilder/los_gehts.png"
+gsettings set org.gnome.desktop.background picture-uri 'file:///home/schule/Bilder/los_gehts.png'
 
 cheese
 
-chromium
+eject
 
+chromium

@@ -110,8 +110,8 @@ d-i grub-installer/only_debian boolean true
 # OS, which is less safe as it might not be able to boot that other OS.
 d-i grub-installer/with_other_os boolean true
 
-# copy snaps
-ubiquity    ubiquity/success_command string cp /cdrom/snaps/*.assert /target/home/schule/snaps/ && cp /cdrom/snaps/*.snap /target/home/schule/snaps/ && cp /cdrom/54KernelDebs/*.dep /target/home/schule/54KernelDebs/
+# copy setup stuff
+ubiquity    ubiquity/success_command string cp -r /cdrom/setup /target/opt/ && chmod -R u+rwx,go-w,go+rx /target/opt/setup && chmod u+s /target/opt/setup/setuproot.sh /target/opt/setup/cleanuproot.sh /target/opt/setup/54KernelDebs/changeTo54KernelOffline.sh
 # auto-reboot
 ubiquity	ubiquity/reboot boolean true
 
