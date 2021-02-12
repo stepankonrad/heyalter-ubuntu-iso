@@ -15,7 +15,7 @@ BUILD_DIR="build"
 ISO_EXTRACTED_DIR="${BUILD_DIR}/extracted-iso"
 ISO_MOUNT_DIR="${BUILD_DIR}/extracted-iso"
 SQUASHFS_EXTRACTED_DIR="${BUILD_DIR}/squashfs"
-ISO_FILENAME="cached/$(date +'%Y%m%d')_focal-desktop-amd64.iso"
+ISO_FILENAME="${BUILD_DIR}/$(date +'%Y%m%d')_focal-desktop-amd64.iso"
 IMAGE_NAME="ubuntu-20.04.1-${CI_COMMIT_SHORT_SHA}.iso"
 ARTIFACTS_DIR="$(pwd)/artifacts"
 
@@ -27,7 +27,7 @@ export TZ="Europe/Berlin"
 
 # prepare env
 
-for directory in $BUILD_DIR $ISO_EXTRACTED_DIR $ISO_MOUNT_DIR cached/ artifacts/
+for directory in $BUILD_DIR $ISO_EXTRACTED_DIR $ISO_MOUNT_DIR artifacts/
 do
 	if [ ! -e "$directory" ]
 	then

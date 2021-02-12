@@ -1,6 +1,3 @@
-cache:
-  paths:
-    - cached
 stages:
   - build_iso
 
