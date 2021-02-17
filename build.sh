@@ -68,7 +68,7 @@ echo "installing software inside chroot"
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y universe
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y multiverse
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt update -y
-fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y gimp vlc mumble enigmail keepass2 audacity geany geogebra geogebra obs-studio openscad krita # gawk mawk  #
+fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y gimp vlc mumble enigmail keepass2 audacity geany geogebra obs-studio openscad krita # gawk mawk  #
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y vim gparted pwgen sl neovim # gawk mawk
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt clean
 
