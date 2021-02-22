@@ -67,10 +67,25 @@ fakeroot unsquashfs -d ${SQUASHFS_EXTRACTED_DIR} ${ISO_EXTRACTED_DIR}/casper/fil
 echo "installing software inside chroot"
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y universe
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y multiverse
+fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y restricted
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt update -y
-fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y gimp vlc mumble enigmail keepass2 audacity geany geogebra obs-studio openscad krita # gawk mawk  #
+fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y default-jre geogebra gimp vlc mumble enigmail keepass2 audacity geany obs-studio openscad krita krita-l10n # gawk mawk  #
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y vim gparted pwgen sl neovim # gawk mawk
 fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt clean
+# Fixing broken symlinks
+FULL_SQFS_EXTRACTED_DIR=`realpath $SQUASHFS_EXTRACTED_DIR`
+fixsymlinks() {
+	for filename in ${FULL_SQFS_EXTRACTED_DIR}$1/*; do
+		if  [[ `readlink $filename` =~ ^$FULL_SQFS_EXTRACTED_DIR ]] ;
+		then
+			echo $filename
+			link=`readlink $filename`
+			ln -sf ${link/$FULL_SQFS_EXTRACTED_DIR/} $filename
+		fi
+	done
+}
+fixsymlinks /usr/bin
+fixsymlinks /etc/alternatives
 
 
 mkdir -p ${ISO_EXTRACTED_DIR}/desktop-mainline-kernel

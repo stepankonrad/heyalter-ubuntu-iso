@@ -2,6 +2,8 @@
 
 The official release of the heyalter ubuntu
 
+[Version History](changelog.md)
+
 ## Contents
 
 - Ubuntu LTS 20.04.2 - Daily build
