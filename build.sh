@@ -14,15 +14,26 @@ BUILD_DIR="build"
 ISO_EXTRACTED_DIR="${BUILD_DIR}/extracted-iso"
 ISO_MOUNT_DIR="${BUILD_DIR}/extracted-iso"
 SQUASHFS_EXTRACTED_DIR="${BUILD_DIR}/squashfs"
+TODAY="$(date +'%Y%m%d')"
 ISO_FILENAME="${BUILD_DIR}/ubuntu-20.04.2.0.iso"
-IMAGE_NAME="ubuntu-${CI_COMMIT_SHORT_SHA}.iso"
+ISO_VOLUME_ID="heyalter-${TODAY}-${CI_PIPELINE_IID}"
+IMAGE_NAME="heyalter-ubuntu-20.04.1-${TODAY}-${CI_PIPELINE_IID}-${CI_COMMIT_REF_NAME}.iso"
+IMAGE_META_NAME="${IMAGE_NAME/\.iso/.meta.txt}"
 ARTIFACTS_DIR="$(pwd)/artifacts"
 
 export DEBIAN_FRONTEND="noninteractive"
 export TZ="Europe/Berlin"
 
-
-
+tee $ARTIFACTS_DIR/${IMAGE_META_NAME} << EOF
+BUILD_DATE=$TODAY
+BASE_IMAGE_URL=$DOWNLOAD_URL
+IMAGE_NAME=$IMAGE_NAME
+EOF
+env | grep -e CI_PIPELINE_IID \
+           -e CI_COMMIT_REF_NAME \
+           -e CI_COMMIT_SHORT_SHA \
+           -e CI_JOB_URL \
+           | tee -a $ARTIFACTS_DIR/${IMAGE_META_NAME}
 
 # prepare env
 
@@ -101,6 +112,9 @@ cp -R files/homeschule ${SQUASHFS_EXTRACTED_DIR}/home/schule
 chown -R 1000:1000 ${SQUASHFS_EXTRACTED_DIR}/home/schule
 chmod -R 755 ${SQUASHFS_EXTRACTED_DIR}/home/schule/.config/
 
+# Hey Alter release information
+cp $ARTIFACTS_DIR/${IMAGE_META_NAME} ${SQUASHFS_EXTRACTED_DIR}/etc/heyalter-release
+
 # Setup scripts
 cp -R setup ${ISO_EXTRACTED_DIR}/
 ./tools/bashwrapper/convert.sh ${ISO_EXTRACTED_DIR}/setup/setuproot.sh
@@ -149,7 +163,6 @@ dd if="$ISO_FILENAME" bs=1 count=446 of="$BUILD_DIR/mbr.bin"
 pushd ${ISO_EXTRACTED_DIR}
 rm -rf md5sum.txt
 find -type f -print0 | xargs -0 md5sum | grep -v isolinux/boot.cat | tee md5sum.txt
-
 
 echo "mkisofs"
 chmod -R a+rx,a-w .
