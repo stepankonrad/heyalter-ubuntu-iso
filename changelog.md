@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2021-02-26
+### Changed
+- The UEFI boot now also supports automatic installation
+
 ## 2021-02-22
 ### Changed
 - Removed the password query in `setup.sh` and `changeTo54KernelOffline.sh`. Sudo is not required anymore

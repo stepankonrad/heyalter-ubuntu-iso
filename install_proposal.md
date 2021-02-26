@@ -23,16 +23,11 @@ Installation
 * PC starten und das BIOS öffnen
   * In das BIOS kommt man in den meisten Fällen mit F2 oder ESC
   * BIOS Einstellungen:
-    * Boot Security: Disable
-    * Boot Mode
-      * CSM oder
-      * Legacy
-      * am besten nicht UEFI (da funktioniert aktuell die automatische Installation nicht vollständig)
     * CPU Virtualisierung: ON
 * BIOS Einstellungen speichern, PC neustarten und PC übers Bootmenü vom USB-Stick starten
   * Bootmenü ist in den meisten Fällen mit F12 oder F9 erreichbar
   * Dort USB-Stick auswählen
-    * Wenn dieser dort doppelt auftaucht, den Eintrag ohne UEFI nehmen
+    * Wenn dieser dort doppelt auftaucht, zuerst den Eintrag mit UEFI versuchen
 * Das System installiert sich von selbst
   * Bei der Aufforderung den USB-Stick abzuziehen, den USB-Stick abziehen und PC mit Enter neustarten
 * Einloggen mit Passwort `schule`

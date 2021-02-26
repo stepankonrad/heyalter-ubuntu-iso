@@ -9,14 +9,13 @@ fi
 # define variables
 
 OUTPUT_FILENAME="output.iso"
-#DOWNLOAD_URL="https://releases.ubuntu.com/20.04.1/ubuntu-20.04.1-desktop-amd64.iso"
-DOWNLOAD_URL="https://cdimage.ubuntu.com/focal/daily-live/current/focal-desktop-amd64.iso" #Daily build with 5.8 kernel
+DOWNLOAD_URL="https://releases.ubuntu.com/20.04.2.0/ubuntu-20.04.2.0-desktop-amd64.iso"
 BUILD_DIR="build"
 ISO_EXTRACTED_DIR="${BUILD_DIR}/extracted-iso"
 ISO_MOUNT_DIR="${BUILD_DIR}/extracted-iso"
 SQUASHFS_EXTRACTED_DIR="${BUILD_DIR}/squashfs"
-ISO_FILENAME="${BUILD_DIR}/$(date +'%Y%m%d')_focal-desktop-amd64.iso"
-IMAGE_NAME="ubuntu-20.04.1-${CI_COMMIT_SHORT_SHA}.iso"
+ISO_FILENAME="${BUILD_DIR}/ubuntu-20.04.2.0.iso"
+IMAGE_NAME="ubuntu-${CI_COMMIT_SHORT_SHA}.iso"
 ARTIFACTS_DIR="$(pwd)/artifacts"
 
 export DEBIAN_FRONTEND="noninteractive"
@@ -37,7 +36,7 @@ do
 done
 ## install needed software
 echo "installing software requirements"
-apt update -y && apt-get install -yq apt-rdepends git snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakeroot fakechroot syslinux-utils cargo
+apt update -y && apt-get install -yq apt-rdepends git snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakeroot fakechroot syslinux-utils cargo xorriso
 ## download iso
 if [ ! -f "${ISO_FILENAME}" ]
 then
@@ -87,9 +86,15 @@ fixsymlinks() {
 fixsymlinks /usr/bin
 fixsymlinks /etc/alternatives
 
+# Add our own Grub configuration
+cp files/grubdefault ${SQUASHFS_EXTRACTED_DIR}/etc/default/grub
+
 # Copying our files to the ISO
 cp files/preseed/* ${ISO_EXTRACTED_DIR}/preseed/
 cp files/isolinux.cfg ${ISO_EXTRACTED_DIR}/isolinux/isolinux.cfg
+rm -f ${ISO_EXTRACTED_DIR}/boot/grub/grub.cfg
+cp files/grub.cfg ${ISO_EXTRACTED_DIR}/boot/grub/grub.cfg
+
 
 # Homedir
 cp -R files/homeschule ${SQUASHFS_EXTRACTED_DIR}/home/schule
@@ -137,10 +142,13 @@ rm ${ISO_EXTRACTED_DIR}/casper/filesystem.squashfs
 mksquashfs ${SQUASHFS_EXTRACTED_DIR} ${ISO_EXTRACTED_DIR}/casper/filesystem.squashfs
 printf $(du -sx --block-size=1 ${SQUASHFS_EXTRACTED_DIR} | cut -f1) > ${ISO_EXTRACTED_DIR}/casper/filesystem.size
 
+dd if="$ISO_FILENAME" bs=1 count=446 of="$BUILD_DIR/mbr.bin"
 pushd ${ISO_EXTRACTED_DIR}
 rm -rf md5sum.txt
 find -type f -print0 | xargs -0 md5sum | grep -v isolinux/boot.cat | tee md5sum.txt
 
-fakeroot mkisofs -D -r -V "${IMAGE_NAME}" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o ${ARTIFACTS_DIR}/${IMAGE_NAME} .
 
-isohybrid ${ARTIFACTS_DIR}/${IMAGE_NAME}
+echo "mkisofs"
+chmod -R a+rx,a-w .
+find . -type l -delete
+xorriso -as mkisofs -r -V "HeyAlter-$CI_COMMIT_SHORT_SHA" -cache-inodes -J -l -isohybrid-mbr "../mbr.bin" -c isolinux/boot.cat -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -isohybrid-gpt-basdat -o ${ARTIFACTS_DIR}/${IMAGE_NAME} .
