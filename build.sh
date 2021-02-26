@@ -24,6 +24,18 @@ ARTIFACTS_DIR="$(pwd)/artifacts"
 export DEBIAN_FRONTEND="noninteractive"
 export TZ="Europe/Berlin"
 
+# prepare env
+
+for directory in $BUILD_DIR $ISO_EXTRACTED_DIR $ISO_MOUNT_DIR $ARTIFACTS_DIR
+do
+	if [ ! -e "$directory" ]
+	then
+		echo creating $directory
+		mkdir $directory
+	fi
+done
+
+# write meta file
 tee $ARTIFACTS_DIR/${IMAGE_META_NAME} << EOF
 BUILD_DATE=$TODAY
 BASE_IMAGE_URL=$DOWNLOAD_URL
@@ -35,16 +47,6 @@ env | grep -e CI_PIPELINE_IID \
            -e CI_JOB_URL \
            | tee -a $ARTIFACTS_DIR/${IMAGE_META_NAME}
 
-# prepare env
-
-for directory in $BUILD_DIR $ISO_EXTRACTED_DIR $ISO_MOUNT_DIR artifacts/
-do
-	if [ ! -e "$directory" ]
-	then
-		echo creating $directory
-		mkdir $directory
-	fi
-done
 ## install needed software
 echo "installing software requirements"
 apt update -y && apt-get install -yq apt-rdepends git snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakeroot fakechroot syslinux-utils cargo xorriso
