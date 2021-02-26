@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Icon=/opt/heyalter/heyalter.png
+Name=Hey, Alter! Help
+Name[de]=Hey, Alter! Hilfe
+Comment=open Hey Alter Hilfe Seite
+Categories=WebBrowser
+Exec=chromium https://www.heyalter.com/hilfe/
+StartupNotify=true
+Terminal=false
+MimeType=text/html;

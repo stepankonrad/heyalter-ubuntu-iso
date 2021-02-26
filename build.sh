@@ -109,6 +109,9 @@ cp -R setup ${ISO_EXTRACTED_DIR}/
 git clone https://gitli.stratum0.org/heyalter/desktop-mainline-kernel.git ${ISO_EXTRACTED_DIR}/setup/desktop-mainline-kernel
 rm -fR ${ISO_EXTRACTED_DIR}/setup/desktop-mainline-kernel/.git
 
+# Persistent HA directory
+cp -R heyalter ${ISO_EXTRACTED_DIR}/
+
 #
 #
 #

@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 ## 2021-02-26
 ### Changed
 - The UEFI boot now also supports automatic installation
+### Added
+- After the cleanup script a HeyAlter Help icon should be created on the desktop
 
 ## 2021-02-22
 ### Changed

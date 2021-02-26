@@ -6,5 +6,4 @@ then
 exit 2
 fi
 
-find /home -lname '/opt/setup/*' -delete
 rm -r /opt/setup

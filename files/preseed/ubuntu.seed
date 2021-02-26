@@ -111,7 +111,7 @@ d-i grub-installer/only_debian boolean true
 d-i grub-installer/with_other_os boolean true
 
 # copy setup stuff
-ubiquity    ubiquity/success_command string cp -r /cdrom/setup /target/opt/ && chmod -R u+rwx,go-w,go+rx /target/opt/setup && chmod u+s /target/opt/setup/setuproot.sh /target/opt/setup/cleanuproot.sh /target/opt/setup/54KernelDebs/changeTo54KernelOffline.sh
+ubiquity    ubiquity/success_command string cp -r /cdrom/setup /target/opt/ && cp -r /cdrom/heyalter /target/opt && chmod -R u+rwx,go-w,go+rx /target/opt/* && chmod u+s /target/opt/setup/setuproot.sh /target/opt/setup/cleanuproot.sh /target/opt/setup/54KernelDebs/changeTo54KernelOffline.sh
 # auto-reboot
 ubiquity	ubiquity/reboot boolean true
 

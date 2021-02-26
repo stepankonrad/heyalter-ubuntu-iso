@@ -10,6 +10,11 @@ cp -R ./homeschule/.config/systemd/user/* ${HOME}/.config/systemd/user
 mkdir ${HOME}/Bilder
 cp ./homeschule/Bilder/los_gehts.png ${HOME}/Bilder/los_gehts.png
 
+sudo cp -R ./heyalter /opt/
+cp ./setup/heyalterhelp.desktop ~/Schreibtisch
+chmox ug+x ~/Schreibtisch/heyalterhelp.desktop
+gio set ~/Schreibtisch/heyalterhelp.desktop "metadata::trusted" true
+
 # Install snaps
 gnome-terminal --wait -- bash -c "cd setup/snaps/; sudo ./_install_all_snaps.sh;"
 
