@@ -8,7 +8,6 @@ fi
 
 # define variables
 
-OUTPUT_FILENAME="output.iso"
 DOWNLOAD_URL="https://releases.ubuntu.com/20.04.2.0/ubuntu-20.04.2.0-desktop-amd64.iso"
 BUILD_DIR="build"
 ISO_EXTRACTED_DIR="${BUILD_DIR}/extracted-iso"
