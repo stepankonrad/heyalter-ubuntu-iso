@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2021-03-10
+### Added
+- Added teams-for-linux app because it should work better for some kids (login issues)
+
 ## 2021-02-26
 ### Changed
 - The UEFI boot now also supports automatic installation

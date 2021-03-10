@@ -15,7 +15,8 @@ The official release of the heyalter ubuntu
   - enigmail
   - keepass2
   - zoom
-  - teams
+  - teams 
+  - teams-for-linux
   - telegram 
   - skype 
   - discord
