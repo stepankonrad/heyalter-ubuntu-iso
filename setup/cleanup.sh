@@ -9,5 +9,6 @@ fi
 find /home -lname '/opt/setup/*' -delete
 cp /opt/setup/heyalterhelp.desktop ~/Schreibtisch
 gio set ~/Schreibtisch/heyalterhelp.desktop "metadata::trusted" true
-
+# HEY-HILFE-Support-Handbuch.pdf is downloaded to /setup in build.sh
+cp /opt/setup/HEY-HILFE-Support-Handbuch.pdf ~/Schreibtisch
 /opt/setup/cleanuproot.sh

@@ -58,7 +58,7 @@ env | grep -e CI_PIPELINE_IID \
 
   ## install needed software
   log "installing software requirements"
-  apt update -y && apt-get install -yq apt-rdepends git snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakeroot fakechroot syslinux-utils cargo xorriso
+  apt update -y && apt-get install -yq apt-rdepends git curl snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakeroot fakechroot syslinux-utils cargo xorriso
 
   ## download iso
   if [ ! -f "${ISO_FILENAME}" ]
@@ -91,7 +91,7 @@ env | grep -e CI_PIPELINE_IID \
   fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y restricted
   fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt update -y
   fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y default-jre geogebra gimp vlc mumble enigmail keepass2 audacity geany obs-studio openscad krita krita-l10n # gawk mawk  #
-  fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y vim gparted pwgen sl neovim # gawk mawk
+  fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y vim pwgen sl neovim curl youtube-dl gparted # gawk mawk
   fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt clean
   
   log "Fixing broken symlinks"
@@ -157,6 +157,9 @@ env | grep -e CI_PIPELINE_IID \
   log "Download Snaps"
   ./_download_snaps.sh ${ISO_EXTRACTED_DIR}/setup/snaps
   
+  log "Download HEY-HILFE-Support-Handbuch.pdf"
+  curl https://heyalter.com/wp-content/uploads/2021/02/HEY-HILFE-Support-Handbuch.pdf --output ${ISO_EXTRACTED_DIR}/setup/HEY-HILFE-Support-Handbuch.pdf --fail --location --max-time 60
+
   log " Download 5.4 Kernel"
   pushd ${ISO_EXTRACTED_DIR}/setup/54KernelDebs
   apt-get download $(apt-rdepends linux-image-generic | grep -v "^ " | sed 's/debconf-2.0/debconf/g')
@@ -172,6 +175,7 @@ fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} dpkg-query -W --showformat=
 cp ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest-desktop
 sed -i '/ubiquity/d' ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest-desktop
 sed -i '/casper/d' ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest-desktop
+sed -i '/gparted/d' ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest-remove
 rm ${ISO_EXTRACTED_DIR}/casper/filesystem.squashfs
 mksquashfs ${SQUASHFS_EXTRACTED_DIR} ${ISO_EXTRACTED_DIR}/casper/filesystem.squashfs
 printf $(du -sx --block-size=1 ${SQUASHFS_EXTRACTED_DIR} | cut -f1) > ${ISO_EXTRACTED_DIR}/casper/filesystem.size

@@ -6,7 +6,7 @@ export CI_COMMIT_SHORT_SHA="$(git rev-parse --short HEAD)"
 export CI_COMMIT_REF_NAME="$(git branch --show-current)"
 export CI_PIPELINE_IID="localbuild"
 
-# we need to put `build` in the container flesystem  as unsquashfs throws errors, if it has to work across filesystems
+# we need to put `build` in the container filesystem as unsquashfs throws errors, if it has to work across filesystems
 cd /heyalter
 mkdir /tmp/build
 

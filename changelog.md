@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2021-05-25
+### Added
+- Added curl,gparted,youtube-dl packets and HEY-HILFE-Support-Handbuch.pdf (moved from /opt/setup to Desktop with cleanup.sh)
+
 ## 2021-03-10
 ### Added
 - Added teams-for-linux app because it should work better for some kids (login issues)
