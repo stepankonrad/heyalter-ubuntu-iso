@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 - Allowed sudo without password for initial setup
 - Enabled AutoLogin for initial setup
 
+## 2021-06-06
+### Changed
+- Added directory `setup_extensions` for custom scripts that are executed at the end of the `setup.sh`
+
 ## 2021-05-25
 ### Added
 - Added curl,gparted,youtube-dl packets and HEY-HILFE-Support-Handbuch.pdf (moved from /opt/setup to Desktop with cleanup.sh)
