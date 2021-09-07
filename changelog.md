@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2021-06-16
+### Add
+- Allowed sudo without password for initial setup
+- Enabled AutoLogin for initial setup
+
 ## 2021-05-25
 ### Added
 - Added curl,gparted,youtube-dl packets and HEY-HILFE-Support-Handbuch.pdf (moved from /opt/setup to Desktop with cleanup.sh)

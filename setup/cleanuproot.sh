@@ -7,3 +7,9 @@ exit 2
 fi
 
 rm -r /opt/setup
+
+# sudo Passwort wieder erzwingen
+rm -r /etc/sudoers.d/schule
+
+# AutoLogin wieder deaktivieren
+sed -i 's/AutomaticLogin/#AutomaticLogin/g' /etc/gdm3/custom.conf
