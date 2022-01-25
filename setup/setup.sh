@@ -5,6 +5,16 @@
 
 zenity --info --text "$(lshw -C memory)\n------------------------------------\nAnzahl Kerne: $(nproc)\n------------------------------------\n$(lshw -C cpu)" --width 1024
 
+# Audio testen
+
+zenity --info --text "OK klicken um Audio zu testen"
+
+arecord|aplay &
+PID=$!
+
+zenity --info --text "Du solltest ein Echo hören. OK klicken um Audio-Test zu beenden"
+kill $PID
+
 # Screensaver und Lock-Screen deaktivieren
 gsettings set org.gnome.desktop.screensaver lock-enabled 'false'
 gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
