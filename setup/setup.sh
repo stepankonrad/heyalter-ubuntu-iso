@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Screensaver und Lock-Screen deaktivieren
+gsettings set org.gnome.desktop.screensaver lock-enabled 'false'
+gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
+gsettings set org.gnome.desktop.session idle-delay 0
 
 # anzeigen der systemparameter
 
@@ -15,13 +19,17 @@ PID=$!
 zenity --info --text "Du solltest ein Echo hören. OK klicken um Audio-Test zu beenden"
 kill $PID
 
-# Screensaver und Lock-Screen deaktivieren
-gsettings set org.gnome.desktop.screensaver lock-enabled 'false'
-gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
-gsettings set org.gnome.desktop.session idle-delay 0
+# Kamera testen
+cheese
+
+# Laufwerk testen
+eject
 
 # Rechte der kopierten Dateien fixen
 gnome-terminal --wait -- bash -c "/opt/setup/setuproot.sh"
+
+# Netzwerk testen
+chromium
 
 # einstellen der favoriten
 dconf write /org/gnome/shell/favorite-apps "['chromium_chromium.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'libreoffice-writer.desktop', 'libreoffice-calc.desktop', 'libreoffice-impress.desktop', 'org.gnome.Software.desktop']"
@@ -31,12 +39,6 @@ systemctl enable --user heyalter.service
 
 # richte das hintergrundbild ein
 gsettings set org.gnome.desktop.background picture-uri 'file:///home/schule/Bilder/los_gehts.png'
-
-cheese
-
-eject
-
-chromium
 
 # optinale Skripte ausführen
 find /opt/setup/setup_extensions/ -name "*.sh" | sort -k1 | xargs -I {} bash {}
