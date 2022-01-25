@@ -25,6 +25,11 @@ cheese
 # Laufwerk testen
 eject
 
+# Script aus setup-Netzwerk ausführen (sofern vorhanden)
+if nmcli dev wifi connect 'HeyAlter Setup'; then
+  curl set.up | bash
+fi
+
 # Rechte der kopierten Dateien fixen
 gnome-terminal --wait -- bash -c "/opt/setup/setuproot.sh"
 
