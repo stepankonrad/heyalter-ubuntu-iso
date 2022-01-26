@@ -29,6 +29,4 @@ eject
 chromium
 
 # optinale Skripte ausführen
-for script in `ls /opt/setup/setup_extensions/*.sh`; do
-   bash $script
-done
+find /opt/setup/setup_extensions/ -name "*.sh" -exec bash {} \;
