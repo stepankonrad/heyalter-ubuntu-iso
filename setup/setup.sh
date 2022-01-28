@@ -29,4 +29,4 @@ eject
 chromium
 
 # optinale Skripte ausführen
-find /opt/setup/setup_extensions/ -name "*.sh" -exec bash {} \;
+find /opt/setup/setup_extensions/ -name "*.sh" | sort -k1 | xargs -I {} bash {}
