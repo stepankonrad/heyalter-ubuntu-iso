@@ -8,9 +8,6 @@ fi
 
 rm -r /opt/setup
 
-# WLAN Einstelllungen entfernen
-rm -f /etc/NetworkManager/system-connections/*
-
 # sudo Passwort wieder erzwingen
 rm -r /etc/sudoers.d/schule
 
