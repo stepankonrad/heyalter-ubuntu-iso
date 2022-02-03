@@ -33,9 +33,6 @@ fi
 # Rechte der kopierten Dateien fixen
 gnome-terminal --wait -- bash -c "/opt/setup/setuproot.sh"
 
-# Netzwerk testen
-chromium
-
 # einstellen der favoriten
 dconf write /org/gnome/shell/favorite-apps "['chromium_chromium.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'libreoffice-writer.desktop', 'libreoffice-calc.desktop', 'libreoffice-impress.desktop', 'org.gnome.Software.desktop']"
 
