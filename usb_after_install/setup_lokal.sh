@@ -12,7 +12,7 @@ cp ./homeschule/Bilder/los_gehts.png ${HOME}/Bilder/los_gehts.png
 
 sudo cp -R ./heyalter /opt/
 cp ./setup/heyalterhelp.desktop ~/Schreibtisch
-chmox ug+x ~/Schreibtisch/heyalterhelp.desktop
+chmod ug+x ~/Schreibtisch/heyalterhelp.desktop
 gio set ~/Schreibtisch/heyalterhelp.desktop "metadata::trusted" true
 
 # Install snaps
