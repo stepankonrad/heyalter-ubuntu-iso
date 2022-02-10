@@ -27,7 +27,7 @@ eject
 
 # Script aus setup-Netzwerk ausführen (sofern vorhanden)
 if nmcli dev wifi connect 'HeyAlter Setup'; then
-  curl set.up | bash
+  gnome-terminal --wait -- bash -c 'curl set.up | bash'
 fi
 
 # Rechte der kopierten Dateien fixen
