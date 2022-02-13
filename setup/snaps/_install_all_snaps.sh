@@ -17,6 +17,9 @@ snap install core20.snap
 snap ack gnome-3-28-1804.assert
 snap install gnome-3-28-1804.snap
 
+snap ack gnome-3-38-2004.assert
+snap install gnome-3-38-2004.snap
+
 for snap2install in $SNAP_ASSERTS
 do
 	echo snap ack $snap2install
