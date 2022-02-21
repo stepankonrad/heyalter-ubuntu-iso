@@ -1,16 +1,17 @@
 #!/bin/bash
 
+# FirstBoot Script zum Aufruf der setup.sh wieder löschen
+rm /home/schule/.config/autostart/firstboot.desktop
+
 # Screensaver und Lock-Screen deaktivieren
 gsettings set org.gnome.desktop.screensaver lock-enabled 'false'
 gsettings set org.gnome.desktop.lockdown disable-lock-screen 'true'
 gsettings set org.gnome.desktop.session idle-delay 0
 
 # anzeigen der systemparameter
-
 zenity --info --text "$(lshw -C memory)\n------------------------------------\nAnzahl Kerne: $(nproc)\n------------------------------------\n$(lshw -C cpu)" --width 1024
 
 # Audio testen
-
 zenity --info --text "OK klicken um Audio zu testen"
 
 arecord|aplay &
