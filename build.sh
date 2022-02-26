@@ -7,7 +7,7 @@ if [ "$EUID" -ne 0 ]
 fi
 
 # define variables
-DOWNLOAD_URL="https://releases.ubuntu.com/20.04/ubuntu-20.04.3-desktop-amd64.iso"
+DOWNLOAD_URL="https://releases.ubuntu.com/20.04/ubuntu-20.04.4-desktop-amd64.iso"
 BUILD_DIR="build"
 ISO_EXTRACTED_DIR="${BUILD_DIR}/extracted-iso"
 ISO_MOUNT_DIR="${BUILD_DIR}/extracted-iso"
