@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2022-06-03
+### Add
+- Added language pack for ukraine
+- Added language pack for russia
+
 ## 2022-05-13
 ### Changed
 - The heyalter service is now enabled in the Cleanup script instead of the Setup script
