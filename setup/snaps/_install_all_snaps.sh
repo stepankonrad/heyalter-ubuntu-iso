@@ -11,6 +11,9 @@ SNAPS=$(printf "%s " "${SNAPS_ARR[@]}")
 snap ack core.assert
 snap install core.snap
 
+snap ack core18.assert
+snap install core18.snap
+
 snap ack core20.assert
 snap install core20.snap
 
