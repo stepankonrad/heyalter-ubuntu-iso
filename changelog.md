@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2022-02-22
+### Changed
+- Skip checkdisk (does not work on every machine)
+
 ## 2021-06-16
 ### Add
 - Allowed sudo without password for initial setup
