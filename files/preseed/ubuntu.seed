@@ -84,6 +84,7 @@ d-i partman/confirm_nooverwrite boolean true
 
 # non-free drivers
 d-i hw-detect/load_firmware boolean true
+ubiquity	ubiquity/use_nonfree boolean true
 
 # User configuration
 d-i	passwd/user-fullname string schule

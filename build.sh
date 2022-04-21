@@ -58,7 +58,7 @@ env | grep -e CI_PIPELINE_IID \
 
   ## install needed software
   log "installing software requirements"
-  apt update -y && apt-get install -yq apt-rdepends git curl snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakeroot fakechroot syslinux-utils cargo xorriso
+  apt update -y && apt-get install -yq apt-rdepends git curl snapd debootstrap gparted squashfs-tools genisoimage p7zip-full wget fakechroot syslinux-utils cargo xorriso fdisk
 
   ## download iso
   if [ ! -f "${ISO_FILENAME}" ]
@@ -72,7 +72,7 @@ env | grep -e CI_PIPELINE_IID \
   7z x -o$ISO_EXTRACTED_DIR ${ISO_FILENAME}
 
   log "unsquash squashfs"
-  fakeroot unsquashfs -d ${SQUASHFS_EXTRACTED_DIR} ${ISO_EXTRACTED_DIR}/casper/filesystem.squashfs
+  unsquashfs -d ${SQUASHFS_EXTRACTED_DIR} ${ISO_EXTRACTED_DIR}/casper/filesystem.squashfs
   #
   # rm -rf ${SQUASHFS_EXTRACTED_DIR}/{run,dev,proc,sys}
   #
@@ -86,13 +86,16 @@ env | grep -e CI_PIPELINE_IID \
   #
 
   log "installing software inside chroot"
-  fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y universe
-  fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y multiverse
-  fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y restricted
-  fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt update -y
-  fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y default-jre geogebra gimp vlc mumble enigmail keepass2 audacity geany obs-studio openscad krita krita-l10n # gawk mawk  #
-  fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt install -y vim pwgen sl neovim curl youtube-dl gparted # gawk mawk
-  fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt clean
+  # fakechroot seems to copy/insert our /etc/passwd and /etc/group into the chroot, which messes package installation up, as it expects the geoclue user to exist
+  # Therefore we just do a hacky copy of the squashfs files to our system
+  cp "$SQUASHFS_EXTRACTED_DIR/etc/passwd" /etc/passwd
+  cp "$SQUASHFS_EXTRACTED_DIR/etc/group" /etc/group
+  fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y universe
+  fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y multiverse
+  fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} add-apt-repository -y restricted
+  fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt-get update -y
+  fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt-get install -y default-jre geogebra gimp vlc mumble enigmail keepass2 audacity geany obs-studio openscad krita krita-l10n vim pwgen sl neovim curl youtube-dl gparted # gawk mawk  #
+  fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} apt-get clean
 
   log "Fixing broken symlinks"
   FULL_SQFS_EXTRACTED_DIR=`realpath $SQUASHFS_EXTRACTED_DIR`
@@ -114,7 +117,6 @@ env | grep -e CI_PIPELINE_IID \
 
   log "Copying our files to the ISO"
   cp files/preseed/* ${ISO_EXTRACTED_DIR}/preseed/
-  cp files/isolinux.cfg ${ISO_EXTRACTED_DIR}/isolinux/isolinux.cfg
   rm -f ${ISO_EXTRACTED_DIR}/boot/grub/grub.cfg
   cp files/grub.cfg ${ISO_EXTRACTED_DIR}/boot/grub/grub.cfg
 
@@ -171,7 +173,7 @@ cp $BUILDINFO_LOG ${ISO_EXTRACTED_DIR}/heyalter/
 
 log "create squashfs"
 chmod +w ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest
-fakeroot fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} dpkg-query -W --showformat='${Package} ${Version}\n' > ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest
+fakechroot chroot ${SQUASHFS_EXTRACTED_DIR} dpkg-query -W --showformat='${Package} ${Version}\n' > ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest
 cp ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest-desktop
 sed -i '/ubiquity/d' ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest-desktop
 sed -i '/casper/d' ${ISO_EXTRACTED_DIR}/casper/filesystem.manifest-desktop
@@ -180,15 +182,19 @@ rm ${ISO_EXTRACTED_DIR}/casper/filesystem.squashfs
 mksquashfs ${SQUASHFS_EXTRACTED_DIR} ${ISO_EXTRACTED_DIR}/casper/filesystem.squashfs
 printf $(du -sx --block-size=1 ${SQUASHFS_EXTRACTED_DIR} | cut -f1) > ${ISO_EXTRACTED_DIR}/casper/filesystem.size
 
-log "prepare mbr"
+# source: https://askubuntu.com/questions/1289400/remaster-installation-image-for-ubuntu-20-10/1289505#1289505
+log "prepare mbr/gpt"
 dd if="$ISO_FILENAME" bs=1 count=446 of="$BUILD_DIR/mbr.bin"
+skip=$(/sbin/fdisk -l "$ISO_FILENAME" | fgrep '.iso2 ' | awk '{print $2}')
+size=$(/sbin/fdisk -l "$ISO_FILENAME" | fgrep '.iso2 ' | awk '{print $4}')
+dd if="$ISO_FILENAME" bs=512 skip="$skip" count="$size" of="$BUILD_DIR/efi.bin"
 
 log "prepare checksums"
 pushd ${ISO_EXTRACTED_DIR}
 rm -rf md5sum.txt
-find -type f -print0 | xargs -0 md5sum | grep -v isolinux/boot.cat | tee md5sum.txt
+find -type f -print0 | xargs -0 md5sum | tee md5sum.txt
 
 log "mkisofs"
 chmod -R a+rx,a-w .
 find . -type l -delete
-xorriso -as mkisofs -r -V "HeyAlter-$CI_COMMIT_SHORT_SHA" -cache-inodes -J -l -isohybrid-mbr "../mbr.bin" -c isolinux/boot.cat -b isolinux/isolinux.bin -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -isohybrid-gpt-basdat -o ${ARTIFACTS_DIR}/${IMAGE_NAME} .
+xorriso -as mkisofs -r -V "HeyAlter-$CI_COMMIT_SHORT_SHA" -J -l -joliet-long -iso-level 3 -partition_offset 16 --grub2-mbr "../mbr.bin" --mbr-force-bootable -append_partition 2 0xEF "../efi.bin" -appended_part_as_gpt -c /boot.catalog -b /boot/grub/i386-pc/eltorito.img -no-emul-boot -boot-load-size 4 -boot-info-table --grub2-boot-info -eltorito-alt-boot -e '--interval:appended_partition_2:all::' -no-emul-boot -o ${ARTIFACTS_DIR}/${IMAGE_NAME} .
