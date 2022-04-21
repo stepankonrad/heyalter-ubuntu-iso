@@ -3,7 +3,7 @@ stages:
 
 build_iso:
   stage: build_iso
-  image: ubuntu:focal
+  image: ubuntu:jammy
   script:
     - ./build.sh
     - "sha256sum artifacts/heyalter-*.iso >> artifacts/hashes.txt"

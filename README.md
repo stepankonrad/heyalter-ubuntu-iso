@@ -6,7 +6,7 @@ The official release of the heyalter ubuntu
 
 ## Contents
 
-- Ubuntu LTS 20.04.2 - Daily build
+- Ubuntu LTS 22.04
 - Additional software: 
   - chromium
   - gimp
@@ -38,10 +38,10 @@ To build the iso image locally you can use the commands below:
 
 ```bash
 # run the build in a docker container
-docker run -it --rm -v ${PWD}:/heyalter -w "/heyalter" --name heyalter-iso ubuntu:focal ./build-local.sh
+docker run -it --rm -v ${PWD}:/heyalter -w "/heyalter" --name heyalter-iso ubuntu:jammy ./build-local.sh
 
 # setup everything and get a shell in a container
-docker run -it --rm -v ${PWD}:/heyalter -w "/heyalter" --name heyalter-iso ubuntu:focal
+docker run -it --rm -v ${PWD}:/heyalter -w "/heyalter" --name heyalter-iso ubuntu:jammy
 ```
 
 ## Help for plain Ubuntu Installations

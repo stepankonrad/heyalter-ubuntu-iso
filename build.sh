@@ -7,13 +7,13 @@ if [ "$EUID" -ne 0 ]
 fi
 
 # define variables
-DOWNLOAD_URL="https://releases.ubuntu.com/20.04/ubuntu-20.04.4-desktop-amd64.iso"
+DOWNLOAD_URL="https://releases.ubuntu.com/22.04/ubuntu-22.04-desktop-amd64.iso"
 BUILD_DIR="build"
 ISO_EXTRACTED_DIR="${BUILD_DIR}/extracted-iso"
 ISO_MOUNT_DIR="${BUILD_DIR}/extracted-iso"
 SQUASHFS_EXTRACTED_DIR="${BUILD_DIR}/squashfs"
 TODAY="$(date +'%Y%m%d')"
-ISO_FILENAME="${BUILD_DIR}/ubuntu-20.04.4.iso"
+ISO_FILENAME="${BUILD_DIR}/ubuntu-22.04.iso"
 ISO_VOLUME_ID="heyalter-${TODAY}-${CI_PIPELINE_IID}"
 IMAGE_NAME="heyalter-${CI_COMMIT_REF_NAME}-${TODAY}-b${CI_PIPELINE_IID}-${CI_COMMIT_SHORT_SHA}.iso"
 IMAGE_META_NAME="${IMAGE_NAME/\.iso/.release.txt}"
