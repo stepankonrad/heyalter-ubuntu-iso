@@ -1,1 +1,0 @@
-/opt/setup/54KernelDebs/changeTo54KernelOffline.sh

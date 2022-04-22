@@ -113,7 +113,7 @@ d-i grub-installer/only_debian boolean true
 d-i grub-installer/with_other_os boolean false
 
 # copy setup stuff
-ubiquity    ubiquity/success_command string cp -r /cdrom/setup /target/opt/ && cp -r /cdrom/heyalter /target/opt && chmod -R u+rwx,go-w,go+rx /target/opt/* && chmod u+s /target/opt/setup/setuproot.sh /target/opt/setup/cleanuproot.sh /target/opt/setup/54KernelDebs/changeTo54KernelOffline.sh && echo 'schule ALL=(ALL) NOPASSWD: ALL' > /target/etc/sudoers.d/schule && chmod 440 /target/etc/sudoers.d/schule
+ubiquity    ubiquity/success_command string cp -r /cdrom/setup /target/opt/ && cp -r /cdrom/heyalter /target/opt && chmod -R u+rwx,go-w,go+rx /target/opt/* && chmod u+s /target/opt/setup/setuproot.sh /target/opt/setup/cleanuproot.sh && echo 'schule ALL=(ALL) NOPASSWD: ALL' > /target/etc/sudoers.d/schule && chmod 440 /target/etc/sudoers.d/schule
 # auto-reboot
 ubiquity	ubiquity/reboot boolean true
 
