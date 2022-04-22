@@ -19,6 +19,12 @@ cp -R files/homeschule "$SQUASHFS_EXTRACTED_DIR/home/schule"
 chown -R 1000:1000 "$SQUASHFS_EXTRACTED_DIR/home/schule"
 chmod -R 755 "$SQUASHFS_EXTRACTED_DIR/home/schule/.config/"
 
+log "Dconf configuration"
+cp files/dconfprofileuser "$SQUASHFS_EXTRACTED_DIR/etc/dconf/profile/user"
+rm -R -f "$SQUASHFS_EXTRACTED_DIR/etc/dconf/db/local.d"
+cp -R files/local.d "$SQUASHFS_EXTRACTED_DIR/etc/dconf/db/local.d"
+fakechroot chroot "$SQUASHFS_EXTRACTED_DIR" dconf update
+
 log "Hey Alter release information"
 cp "$ARTIFACTS_DIR/$IMAGE_META_NAME" "$SQUASHFS_EXTRACTED_DIR/etc/heyalter-release"
 
