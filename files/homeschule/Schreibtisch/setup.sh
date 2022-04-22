@@ -1,1 +1,0 @@
-/opt/setup/setup.sh

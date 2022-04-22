@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Icon=/opt/setup/cleanup.svg
+Name=Cleanup
+Exec=/opt/setup/cleanup.sh
+Terminal=false

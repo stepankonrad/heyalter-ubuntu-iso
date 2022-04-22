@@ -1,1 +1,0 @@
-/opt/setup/cleanup.sh

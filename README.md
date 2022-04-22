@@ -34,6 +34,8 @@ The official release of the heyalter ubuntu
 
 ## Local build scripts
 
+> ⚠️  Das Buildscript überschreibt die `/etc/passwd` und `/etc/group` im Hostsystem. Daher bitte **nicht außerhalb eines Docker-Containers ausführen!**
+
 To build the iso image locally you can use the commands below:
 
 ```bash
