@@ -25,6 +25,10 @@ rm -R -f "$SQUASHFS_EXTRACTED_DIR/etc/dconf/db/local.d"
 cp -R files/local.d "$SQUASHFS_EXTRACTED_DIR/etc/dconf/db/local.d"
 fakechroot chroot "$SQUASHFS_EXTRACTED_DIR" dconf update
 
+log "Sudoers"
+cp files/sudoers "$SQUASHFS_EXTRACTED_DIR/etc/sudoers.d/schule"
+chmod 440 "$SQUASHFS_EXTRACTED_DIR/etc/sudoers.d/schule"
+
 log "Hey Alter release information"
 cp "$ARTIFACTS_DIR/$IMAGE_META_NAME" "$SQUASHFS_EXTRACTED_DIR/etc/heyalter-release"
 
