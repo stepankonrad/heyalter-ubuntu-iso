@@ -32,7 +32,7 @@ if nmcli dev wifi connect 'HeyAlter Setup'; then
 fi
 
 # Rechte der kopierten Dateien fixen
-gnome-terminal --wait -- bash -c "/opt/setup/setuproot.sh"
+gnome-terminal --wait -- bash -c "sudo /opt/setup/setuproot.sh"
 
 # zeige nach reboot bei erster verbindung die wilkommen-seite
 systemctl enable --user heyalter.service

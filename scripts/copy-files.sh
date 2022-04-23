@@ -30,8 +30,6 @@ cp "$ARTIFACTS_DIR/$IMAGE_META_NAME" "$SQUASHFS_EXTRACTED_DIR/etc/heyalter-relea
 
 log "Setup scripts"
 cp -R setup "$ISO_EXTRACTED_DIR/"
-./tools/bashwrapper/convert.sh "$ISO_EXTRACTED_DIR/setup/setuproot.sh"
-./tools/bashwrapper/convert.sh "$ISO_EXTRACTED_DIR/setup/cleanuproot.sh"
 
 log "Persistent HA directory"
 cp -R heyalter "$ISO_EXTRACTED_DIR/"

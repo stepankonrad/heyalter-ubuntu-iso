@@ -20,4 +20,4 @@ gsettings set org.gnome.desktop.screensaver lock-enabled 'true'
 gsettings set org.gnome.desktop.lockdown disable-lock-screen 'false'
 gsettings set org.gnome.desktop.session idle-delay 300
 
-/opt/setup/cleanuproot.sh
+sudo /opt/setup/cleanuproot.sh
