@@ -21,7 +21,7 @@ zenity --info --text "Du solltest ein Echo hören. OK klicken um Audio-Test zu b
 kill $PID
 
 # Kamera testen
-cheese
+guvcview --gui none
 
 # Laufwerk testen
 eject
