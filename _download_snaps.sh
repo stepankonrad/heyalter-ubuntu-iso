@@ -2,7 +2,7 @@
 
 OUTPUT_DIR=$1
 
-for snap2install in core18 core20 core gnome-3-28-1804 gnome-3-38-2004 chromium teams teams-for-linux zoom-client skype discord telegram-desktop inkscape
+for snap2install in core18 core20 core gnome-3-28-1804 gnome-3-38-2004 chromium teams teams-for-linux skype discord telegram-desktop inkscape
 do
 	echo download $directory
 	snap download $snap2install --target-directory ${OUTPUT_DIR}/
