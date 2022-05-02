@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2022-05-02
+### Changed
+- ISO now uses Ubuntu 22.04 as a base
+- Refactored the build process for faster debugging during the ISO development and removed obsolete stuff
+
+### Added
+- `guvcview` to test the webcam as a replacement for `cheese`
+- Setup and Cleanup now have icons, as they needed to be converted to desktop files instead of bash scripts (see #34)
+
+### Removed
+- `cheese`, as it is currently bugged (see #39)
+- `zoom-client`, as the snap doesn't work with Wayland and the problem is still unfixed since Ubuntu 21.10 (see #40)
+  - The deb file from the official Zoom page works fine (but cannot be included, due to update problems)
+- The 5.4 Kernel downgrade, as it is not possible anymore in Ubuntu 22.04 (and maybe not necessary anymore, see #36)
+
+### Known Bugs
+- Ubuntu 22.04 doesn't use ISOLINUX anymore and replaced it with grub
+  - This may result in being unable to boot the ISO on a few devices
+  - One solution may be to install the disk on another computer and then swap it back to the problematic computer
+
 ## 2022-02-22
 ### Changed
 - Skip checkdisk (does not work on every machine)
