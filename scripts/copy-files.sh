@@ -25,10 +25,6 @@ rm -R -f "$SQUASHFS_EXTRACTED_DIR/etc/dconf/db/local.d"
 cp -R files/local.d "$SQUASHFS_EXTRACTED_DIR/etc/dconf/db/local.d"
 fakechroot chroot "$SQUASHFS_EXTRACTED_DIR" dconf update
 
-log "Sudoers"
-cp files/sudoers "$SQUASHFS_EXTRACTED_DIR/etc/sudoers.d/schule"
-chmod 440 "$SQUASHFS_EXTRACTED_DIR/etc/sudoers.d/schule"
-
 log "Hey Alter release information"
 cp "$ARTIFACTS_DIR/$IMAGE_META_NAME" "$SQUASHFS_EXTRACTED_DIR/etc/heyalter-release"
 
@@ -43,3 +39,6 @@ cp -R files/homeschule "$ISO_EXTRACTED_DIR/"
 
 cp usb_after_install/* "$ISO_EXTRACTED_DIR"
 chown 1000:1000 "$ISO_EXTRACTED_DIR/setup_lokal.sh"
+
+log "Patching Installer"
+patch -d "$SQUASHFS_EXTRACTED_DIR" -p0 --forward -r - < files/ubiquity.patch || true

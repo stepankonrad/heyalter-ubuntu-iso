@@ -11,8 +11,5 @@ rm -r /opt/setup
 # WLAN Einstelllungen entfernen
 rm -f /etc/NetworkManager/system-connections/*
 
-# sudo Passwort wieder erzwingen
-rm -r /etc/sudoers.d/schule
-
 # AutoLogin wieder deaktivieren
 sed -i 's/AutomaticLogin/#AutomaticLogin/g' /etc/gdm3/custom.conf

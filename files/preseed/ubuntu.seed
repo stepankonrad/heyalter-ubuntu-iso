@@ -89,9 +89,11 @@ ubiquity	ubiquity/use_nonfree boolean true
 # User configuration
 d-i	passwd/user-fullname string schule
 d-i	passwd/username string schule
-d-i	passwd/user-password-crypted password $6$mzYTK1/8GB/8wON$QF5UDc.KYd9Hv/kR8s7j7yZo/Wheya4rNGBJ5kJd8ryplNEj.u5QUo.IkY07ZOBboEn3X3N5c2buD.DOasuNn1
-d-i	passwd/auto-login boolean true
+d-i	user-setup/allow-password-empty boolean true
 d-i	user-setup/allow-password-weak boolean true
+d-i	passwd/user-password password
+d-i	passwd/user-password-again password
+d-i	passwd/auto-login boolean true
 
 ## Low Level Format
 #d-i s390-dasd/auto-format boolean true

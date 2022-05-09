@@ -1,0 +1,13 @@
+--- usr/lib/ubiquity/user-setup/user-setup-apply.bak	2022-05-12 19:13:00.093291044 +0000
++++ usr/lib/ubiquity/user-setup/user-setup-apply	2022-05-12 19:41:29.790407040 +0000
+@@ -30,6 +30,10 @@
+ 	USER="$1"
+ 	PASSWD="$2"
+ 
++	if [ -z "$PASSWD" ]; then
++		set -- "$1" "$2" true "$4"
++	fi
++
+ 	local VERSION=$($chroot $ROOT dpkg-query -W -f '${Version}\n' passwd)
+ 	PAM_SET_PWD=false
+ 	if $chroot $ROOT dpkg --compare-versions "$VERSION" ge "1:4.1.4-1"; then
