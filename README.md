@@ -32,6 +32,14 @@ The official release of the heyalter ubuntu
 
 - [Installation procedure proposal {german}](install_proposal.md)
 
+## Reenable the Welcome page on the first boot
+
+After executing the Cleanup script, the computer will **once** open a welcome page when detecting a internet connection.
+If this is unintentionally triggered while/after setting up the PC, you can reenable the welcome page with the following command:
+```bash
+systemctl enable --user heyalter.service
+```
+
 ## Local build scripts
 
 > ⚠️  Das Buildscript überschreibt die `/etc/passwd` und `/etc/group` im Hostsystem. Daher bitte **nicht außerhalb eines Docker-Containers ausführen!**

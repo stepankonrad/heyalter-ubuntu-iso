@@ -20,4 +20,7 @@ gsettings set org.gnome.desktop.screensaver lock-enabled 'true'
 gsettings set org.gnome.desktop.lockdown disable-lock-screen 'false'
 gsettings set org.gnome.desktop.session idle-delay 300
 
+# zeige nach reboot bei erster verbindung die wilkommen-seite
+systemctl enable --user heyalter.service
+
 sudo /opt/setup/cleanuproot.sh
