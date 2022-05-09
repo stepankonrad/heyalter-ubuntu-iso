@@ -26,6 +26,7 @@ The official release of the heyalter ubuntu
   - obs-studio 
   - openscad 
   - krita
+  - ksnip
 
 ## Installation procedure proposal
 

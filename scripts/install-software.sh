@@ -16,7 +16,7 @@ fakechroot chroot "$SQUASHFS_EXTRACTED_DIR" add-apt-repository -y multiverse
 fakechroot chroot "$SQUASHFS_EXTRACTED_DIR" add-apt-repository -y restricted
 fakechroot chroot "$SQUASHFS_EXTRACTED_DIR" apt-get update -y
 fakechroot chroot "$SQUASHFS_EXTRACTED_DIR" apt-get remove -y cheese
-fakechroot chroot "$SQUASHFS_EXTRACTED_DIR" apt-get install -y default-jre geogebra gimp vlc mumble keepass2 audacity geany obs-studio openscad krita krita-l10n vim pwgen sl neovim curl youtube-dl gparted telegram-desktop inkscape guvcview
+fakechroot chroot "$SQUASHFS_EXTRACTED_DIR" apt-get install -y default-jre geogebra gimp vlc mumble keepass2 audacity geany obs-studio openscad krita krita-l10n vim pwgen sl neovim curl youtube-dl gparted telegram-desktop inkscape guvcview ksnip
 fakechroot chroot "$SQUASHFS_EXTRACTED_DIR" apt-get clean
 
 
