@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2022-05-13
+### Changed
+- The heyalter service is now enabled in the Cleanup script instead of the Setup script
+- The Safe Graphics boot entry now also does an autoinstall
+- Removed the default password `schule`
+- Improved the build documentation
+
+### Added
+- `ksnip` Package added
+- Manual partitioning boot option
+
 ## 2022-05-02
 ### Changed
 - ISO now uses Ubuntu 22.04 as a base
