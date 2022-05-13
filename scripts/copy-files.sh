@@ -9,7 +9,8 @@ log "Add our own Grub configuration"
 cp files/grubdefault "$SQUASHFS_EXTRACTED_DIR/etc/default/grub"
 
 log "Copying our files to the ISO"
-cp files/preseed/* "$ISO_EXTRACTED_DIR/preseed/"
+cp files/preseed/ubuntu_manualpart.seed "$ISO_EXTRACTED_DIR/preseed/"
+cat files/preseed/ubuntu_manualpart.seed files/preseed/autopartition.addition > "$ISO_EXTRACTED_DIR/preseed/ubuntu.seed"
 rm -f "$ISO_EXTRACTED_DIR/boot/grub/grub.cfg"
 cp files/grub.cfg "$ISO_EXTRACTED_DIR/boot/grub/grub.cfg"
 
