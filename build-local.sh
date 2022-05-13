@@ -14,6 +14,3 @@ fi
 
 # call the build script
 ./build.sh
-
-#cleanup
-rm -r /tmp/build

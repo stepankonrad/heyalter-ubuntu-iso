@@ -40,17 +40,27 @@ If this is unintentionally triggered while/after setting up the PC, you can reen
 systemctl enable --user heyalter.service
 ```
 
-## Local build scripts
+## Building the image
 
 > ⚠️  Das Buildscript überschreibt die `/etc/passwd` und `/etc/group` im Hostsystem. Daher bitte **nicht außerhalb eines Docker-Containers ausführen!**
 
-To build the iso image locally you can use the commands below:
+To build the iso image, execute the following commands:
 
 ```bash
-# run the build in a docker container
-docker run -it --rm -v ${PWD}:/heyalter -w "/heyalter" --name heyalter-iso ubuntu:jammy ./build-local.sh
+git clone https://gitli.stratum0.org/heyalter/heyalter-ubuntu-iso.git
+cd heyalter-ubuntu-iso
+docker run -it --rm -v "${PWD}":/heyalter -w "/heyalter" --name heyalter-iso ubuntu:jammy ./build-local.sh
+```
 
-# setup everything and get a shell in a container
+The finished build artifacts can be found inside the `artifacts` folder.
+
+If you wish to debug a build, you might just start a docker container with the default bash and execute
+`./build-local.sh` manually inside it. This allows you to inspect the intermediate files when a build error occurrs.
+Furthermore you can manually execute the build steps by executing the appropriate script in the `scripts`-Folder, so
+you don't need to start the build from scratch on little changes.
+Execute the following command, instead of the above docker command:
+
+```bash
 docker run -it --rm -v ${PWD}:/heyalter -w "/heyalter" --name heyalter-iso ubuntu:jammy
 ```
 
