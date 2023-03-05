@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2023-08-20
+### Change
+- Updated the base image to Ubuntu 22.04.3
+
 ## 2023-02-06
 ### Change
 - Splitted setup.sh to separate scripts
