@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2023-02-06
+### Change
+- Splitted setup.sh to separate scripts
+- Removed directory `setup_extensions` as custom scripts could be placed in the directory `setup_steps`
+
 ## 2022-06-03
 ### Add
 - Added language pack for ukraine
