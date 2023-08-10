@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Change
 - Updated the base image to Ubuntu 22.04.3
 - A missing Webcam now doesn't abort the Setup script, but instead shows a warning
+- A missing WLAN card now shows a warning
 
 ## 2023-02-06
 ### Change
