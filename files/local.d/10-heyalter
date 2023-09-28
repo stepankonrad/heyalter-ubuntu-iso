@@ -5,4 +5,4 @@ start-corner='top-left'
 favorite-apps=['chromium_chromium.desktop', 'thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'libreoffice-writer.desktop', 'libreoffice-calc.desktop', 'libreoffice-impress.desktop', 'org.gnome.Software.desktop']
 
 [org/gnome/desktop/background]
-picture-uri='file:///opt/heyalter/los_gehts.png'
+picture-uri='file:///opt/heyalter/los_gehts.svg'

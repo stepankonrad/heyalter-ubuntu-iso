@@ -8,7 +8,7 @@ mkdir -p ${HOME}/.config/systemd/user
 cp -R ./homeschule/.config/systemd/user/* ${HOME}/.config/systemd/user
 
 mkdir ${HOME}/Bilder
-cp ./homeschule/Bilder/los_gehts.png ${HOME}/Bilder/los_gehts.png
+cp ./homeschule/Bilder/los_gehts.svg ${HOME}/Bilder/los_gehts.svg
 
 sudo cp -R ./heyalter /opt/
 cp ./setup/heyalterhelp.desktop ~/Schreibtisch
@@ -26,7 +26,7 @@ dconf write /org/gnome/shell/favorite-apps "['chromium_chromium.desktop', 'thund
 systemctl enable --user heyalter.service
 
 # richte das hintergrundbild ein
-gsettings set org.gnome.desktop.background picture-uri "file://${HOME}/Bilder/los_gehts.png"
+gsettings set org.gnome.desktop.background picture-uri "file://${HOME}/Bilder/los_gehts.svg"
 
 cheese
 
