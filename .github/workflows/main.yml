@@ -15,14 +15,14 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch }}
           submodules: true
-      - name: Build
-        run:  sudo ./build-local.sh
       - name: ISO Cache
         uses: actions/cache@v4.0.2
         with:
           path: /mnt/heyalter-ubuntu-iso/build/ubuntu-22.04.iso
           save-always: true
           key: ubuntu-iso
+      - name: Build
+        run:  sudo ./build-local.sh    
       - name: Archive build output
         uses: actions/upload-artifact@v3
         with:
