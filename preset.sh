@@ -1,7 +1,7 @@
 #!/bin/bash
 
 df -h
-mv /home/runner/work/_temp/ /mnt/ 
-cd /mnt/ 
-ls -la
+cp /home/runner/work/heyalter-ubuntu-iso/heyalter-ubuntu-iso /mnt
+cd /mnt/heyalter-ubuntu-iso
 pwd
+ls -la
