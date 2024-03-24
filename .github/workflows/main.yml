@@ -20,8 +20,6 @@ jobs:
           submodules: true
       - name: Umgebung Filesystem      
         run: "df -h"
-      - name: Umgebung Speicher
-        run: "free -m"
       - name: Build
         run:  sudo ./build.sh
       - name: Check256
