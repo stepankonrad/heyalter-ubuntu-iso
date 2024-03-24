@@ -4,14 +4,15 @@
 apt update && apt install git -y
 
 # we need to put `build` in the container filesystem as unsquashfs throws errors, if it has to work across filesystems
-cd /heyalter
-mkdir /tmp/build
+ sudo mkdir -p /heyalter
+sudo  cd /heyalter
+sudo mkdir /tmp/build
 
 if [ ! -L /heyalter/build ]
 then
-	ln -s /tmp/build /heyalter/build
+	sudo  ln -s /tmp/build /heyalter/build
 fi
 
 # call the build script
-./preset.sh
-./build.sh
+sudo  ./preset.sh
+sudo ./build.sh
