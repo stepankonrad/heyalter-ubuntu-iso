@@ -16,7 +16,7 @@ jobs:
           ref: ${{ github.event.inputs.branch }}
           submodules: true
       - name: Umgebung Filesystem      
-        run:  "sudo ./preset.sh"
+        run:  sudo ./preset.sh
       - name: Build
         run:  sudo ./build.sh
       - name: Check256
