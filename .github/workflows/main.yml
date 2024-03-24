@@ -24,9 +24,9 @@ jobs:
       - name: Build
         run:  sudo ./build-local.sh    
       - name: Archive build output
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-            name: $IMAGE_NAME
+            name: heyalter
             path: /mnt/heyalter-ubuntu-iso/artifacts/
     
     
