@@ -13,4 +13,5 @@ then
 fi
 
 # call the build script
+./preset.sh
 ./build.sh
