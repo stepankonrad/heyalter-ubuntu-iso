@@ -16,8 +16,8 @@ fi
 # call the build script
 
 df -h
-cp /home/runner/work/heyalter-ubuntu-iso/heyalter-ubuntu-iso /mnt
-cd /mnt/heyalter-ubuntu-iso
+cp -r /home/runner/work/heyalter-ubuntu-iso/heyalter-ubuntu-iso /mnt
+cd  /mnt/heyalter-ubuntu-iso
 pwd
 ls -la
 
