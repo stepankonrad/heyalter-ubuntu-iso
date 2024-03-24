@@ -26,7 +26,7 @@ jobs:
       - name: Archive build output
         uses: actions/upload-artifact@v3
         with:
-            name: heyalter.iso
+            name: $IMAGE_NAME
             path: /mnt/heyalter-ubuntu-iso/artifacts/
     
     
