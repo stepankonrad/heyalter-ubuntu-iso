@@ -11,15 +11,18 @@ jobs:
     runs-on: ubuntu-22.04
     
     steps:
-      - name: PreCheck
-        run: "cd /mnt/"    
       - name: Auschecken
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch }}
           submodules: true
       - name: Umgebung Filesystem      
-        run: "df -h"
+        run: |
+            "df -h"
+            "mv '/home/runner/work/_temp/ /mnt/ "
+            "cd /mnt/" 
+            " ls -la"
+            "pwd" 
       - name: Build
         run:  sudo ./build.sh
       - name: Check256
