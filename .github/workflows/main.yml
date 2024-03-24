@@ -17,9 +17,7 @@ jobs:
           ref: ${{ github.event.inputs.branch }}
           submodules: true
       - name: Umgebung
-        run: |
-            "df -h"
-            "free -m"
+        run: "df -h"
       - name: Build
         run:  sudo ./build.sh
       - name: Check256
