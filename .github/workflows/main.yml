@@ -21,7 +21,7 @@ jobs:
           path: /mnt/heyalter-ubuntu-iso/build/ubuntu-22.04.iso
           save-always: true
           key: ubuntu-22.04.iso
-          restore-keys: ubuntu-22.04.iso
+
       - name: Build
         run:  sudo ./build-local.sh    
       - name: Archive build output
