@@ -1,0 +1,24 @@
+name: Build ISO
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Which branch?'
+        required: true
+        default: 'master'      
+jobs:
+  build_iso:
+    runs-on: ubuntu-22.04
+    
+    steps:
+      - name: Build
+        run: ./build.sh
+      - name: Check256
+        run: "sha256sum artifacts/heyalter-*.iso >> artifacts/hashes.txt"
+      - name: Check2512
+        run: "sha512sum artifacts/heyalter-*.iso >> artifacts/hashes.txt"
+      - name: Archive build output
+        uses: actions/upload-artifact@v3
+    
+    
+    
