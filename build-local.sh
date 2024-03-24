@@ -14,5 +14,11 @@ then
 fi
 
 # call the build script
-sudo  ./preset.sh
+
+df -h
+cp /home/runner/work/heyalter-ubuntu-iso/heyalter-ubuntu-iso /mnt
+cd /mnt/heyalter-ubuntu-iso
+pwd
+ls -la
+
 sudo ./build.sh
