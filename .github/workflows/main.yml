@@ -23,10 +23,6 @@ jobs:
           path: /mnt/heyalter-ubuntu-iso/build/ubuntu-22.04.iso
           save-always: true
           key: ubuntu-iso
-      - name: Check256
-        run: "sha256sum ./artifacts/heyalter-*.iso >> ./artifacts/hashes.txt"
-      - name: Check512
-        run: "sha512sum ./artifacts/heyalter-*.iso >> ./artifacts/hashes.txt"
       - name: Archive build output
         uses: actions/upload-artifact@v3
         with:
