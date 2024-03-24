@@ -18,7 +18,7 @@ jobs:
       - name: ISO Cache
         uses: actions/cache@v4.0.2
         with:
-          path: /mnt/heyalter-ubuntu-iso/build/
+          path: /mnt/heyalter-ubuntu-iso/build/ubuntu-22.04.iso
           save-always: true
           key: ubuntu-22.04.iso
       - name: Build
