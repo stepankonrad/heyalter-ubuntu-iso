@@ -8,8 +8,7 @@ on:
         default: 'master'      
 jobs:
   build_iso:
-    runs-on: ubuntu-22.04
-    
+    runs-on: ubuntu-22.04  
     steps:
       - name: Auschecken
         uses: actions/checkout@v4
@@ -17,12 +16,7 @@ jobs:
           ref: ${{ github.event.inputs.branch }}
           submodules: true
       - name: Umgebung Filesystem      
-        run: |
-            "df -h"
-            "mv '/home/runner/work/_temp/ /mnt/ "
-            "cd /mnt/" 
-            " ls -la"
-            "pwd" 
+        run:  "sudo ./preset.sh"
       - name: Build
         run:  sudo ./build.sh
       - name: Check256
