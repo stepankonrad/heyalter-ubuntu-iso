@@ -18,11 +18,14 @@ jobs:
       - name: Build
         run:  sudo ./build-local.sh
       - name: Check256
-        run: "sha256sum artifacts/heyalter-*.iso >> artifacts/hashes.txt"
+        run: "sha256sum ./artifacts/heyalter-*.iso >> ./artifacts/hashes.txt"
       - name: Check2512
-        run: "sha512sum artifacts/heyalter-*.iso >> artifacts/hashes.txt"
+        run: "sha512sum ./artifacts/heyalter-*.iso >> ./artifacts/hashes.txt"
       - name: Archive build output
         uses: actions/upload-artifact@v3
+        with:
+            name: heyalter.iso
+            path: /mnt/heyalter-ubuntu-iso/artifacts/heyalter-*.iso 
     
     
     
