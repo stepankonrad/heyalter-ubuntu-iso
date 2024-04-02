@@ -37,12 +37,7 @@ d-i	clock-setup/ntp-server string ntp.ubuntu.com
 ## The Debian installer will install on the first disk it finds which can
 ## sometimes be the USB stick itself. Work around this by rolling our own auto
 ## detect logic which disallows installing on USB devices.
-d-i partman/early_command string \
-  USBDEV_LIST="$(mktemp)"; \
-  list-devices usb-partition | sed "s/\(.*\)./\1/" > "$USBDEV_LIST"; \
-  BOOTDEV="$(list-devices disk | grep -vf "$USBDEV_LIST" | head -n 1)"; \
-  debconf-set partman-auto/disk "$BOOTDEV"; \
-  debconf-set grub-installer/bootdev "$BOOTDEV";
+d-i partman/early_command string /cdrom/setup/wipe-disks.sh
 #  while /bin/true; do sleep 0.01; rm -f /target/etc/grub.d/30_os-prober; done &
 
 
