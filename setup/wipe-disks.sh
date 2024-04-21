@@ -3,7 +3,7 @@
 set -x
 
 check_num_disks () {
-  local NUM_DISKS=$($DISKDEV_LIST | wc -l)
+  local NUM_DISKS=$(echo "$DISKDEV_LIST" | wc -l)
   if [ $NUM_DISKS -ne 1 ]; then
 
     zenity --error --no-wrap --text="Anzahl der installierten Disks = $NUM_DISKS
@@ -19,7 +19,7 @@ populate_device_list () {
   list-devices usb-partition | sed "s/\(.*\)./\1/" > "$USBDEV_LIST"
   local DISKDEV_LIST="$(list-devices disk | grep -vf "$USBDEV_LIST")"
   check_num_disks
-  BOOTDEV="$($DISKDEV_LIST | head -n 1)"
+  BOOTDEV="$(echo "$DISKDEV_LIST" | head -n 1)"
 }
 
 wipe_nvme () {
