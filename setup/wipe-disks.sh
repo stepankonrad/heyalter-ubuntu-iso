@@ -24,16 +24,19 @@ populate_device_list () {
 
 wipe_nvme () {
   OUTPUT=$(nvme format --ses=1 --force $BOOTDEV 2>&1)
+  RC=$?
+
+  return $RC
 }
 
 wipe_ata () {
   OUTPUT=$(ata-secure-erase.sh -f $BOOTDEV 2>&1)
-  if [ $? -eq 0 ]; then
+  RC=$?
+  if [ $RC -eq 0 ]; then
     return 0
   fi
 
-  # if [[ $OUTPUT =~ "security state is frozen" ]]; then
-  if [[ $OUTPUT =~ "command not found" ]]; then
+  if [[ $OUTPUT =~ "security state is frozen" ]]; then
 
     zenity --info --no-wrap --text="Secure Erase nicht durchgeführt: Frozen Security State!
 Laptop wird in Suspend versetzt. Bitte danach wieder aufwecken!
@@ -44,10 +47,13 @@ Falls die SSD danach immer noch Frozen ist, muss die SSD im laufenden Betrieb ho
     zenity --info --text="Zweiter Versuch..."
 
     OUTPUT=$(ata-secure-erase.sh -f $BOOTDEV 2>&1)
-    if [ $? -eq 0 ]; then
+    RC=$?
+    if [ $RC -eq 0 ]; then
       return 0
     fi
   fi
+
+  return $RC
 }
 
 wipe_nwipe () {
@@ -98,7 +104,7 @@ main () {
   esac
 
   # fallback
-  if [ $? -ne 0 ]; then
+  if [ $RC -ne 0 ]; then
     wipe_nwipe
   fi
 
