@@ -9,8 +9,8 @@ check_num_disks () {
     zenity --error --no-wrap --text="Anzahl der installierten Disks = $NUM_DISKS
 Es muss genau eine Disk verfügbar sein. Installierte Disks:
 $DISKDEV_LIST"
-    exit 1
 
+    exit 1
   fi
 }
 
@@ -78,14 +78,15 @@ check_all_zero () {
   OUTPUT=$(nwipe -m verify --nogui --autonuke $BOOTDEV 2>&1)
 
   if [ $? -ne 0 ]; then
+
     zenity --error --no-wrap --text="SSD ist nicht leer!
 Fehler:
 $OUTPUT
 
 Installation wird abgebrochen"
-  fi
 
-  exit 1
+    exit 1
+  fi
 }
 
 configure_install () {
