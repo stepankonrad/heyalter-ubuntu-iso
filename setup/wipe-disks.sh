@@ -1,62 +1,109 @@
 #!/bin/bash
 
-# enumerate all devices
-USBDEV_LIST="$(mktemp)"
-list-devices usb-partition | sed "s/\(.*\)./\1/" > "$USBDEV_LIST"
-NUM_DISKS="$(list-devices disk | grep -vf "$USBDEV_LIST" | wc -l)"
+set -x
 
-. /usr/share/debconf/confmodule
-if [ $NUM_DISKS -ne 1 ]; then
+check_num_disks () {
+  local NUM_DISKS=$($DISKDEV_LIST | wc -l)
+  if [ $NUM_DISKS -ne 1 ]; then
 
-  cat > /tmp/numdisks.template <<'!EOF!'
-Template: wipe-disks/numdisks
-Type: error
-Description: Fehler: Anzahl der installierten Disks = $NUM_DISKS
- Es muss genau eine Disk verfügbar sein. Installierte Disks:
- $(list-devices disk)
-!EOF!
+    zenity --error --no-wrap --text="Anzahl der installierten Disks = $NUM_DISKS
+Es muss genau eine Disk verfügbar sein. Installierte Disks:
+$DISKDEV_LIST"
+    exit 1
 
-  debconf-loadtemplate wipe-disks /tmp/numdisks.template
+  fi
+}
 
-  while [ 1 ]; do
-    db_input critical wipe-disks/numdisks || true
-    db_go
-    db_get wipe-disks/numdisks
-  done
-fi
+populate_device_list () {
+  local USBDEV_LIST="$(mktemp)"
+  list-devices usb-partition | sed "s/\(.*\)./\1/" > "$USBDEV_LIST"
+  local DISKDEV_LIST="$(list-devices disk | grep -vf "$USBDEV_LIST")"
+  check_num_disks
+  BOOTDEV="$($DISKDEV_LIST | head -n 1)"
+}
 
-BOOTDEV="$(list-devices disk | grep -vf "$USBDEV_LIST" | head -n 1)"
-case "$BOOTDEV" in 
-  *nvme*)
-    # wipe NVMe devices
-    nvme format --ses=1 --force $BOOTDEV;;
-  *)
-    # wipe ATA devices
-    /*/*/ata-secure-erase.sh -f $BOOTDEV;;
-esac
-if [ $? -ne 0 ]; then
+wipe_nvme () {
+  OUTPUT=$(nvme format --ses=1 --force $BOOTDEV 2>&1)
+}
 
-  cat > /tmp/fallback.template <<'!EOF!'
-Template: wipe-disks/fallback
-Type: error
-Description: Fehler: Secure Erase nicht durchgeführt!
- Fallback auf nwipe
-!EOF!
+wipe_ata () {
+  OUTPUT=$(ata-secure-erase.sh -f $BOOTDEV 2>&1)
+  if [ $? -eq 0 ]; then
+    return 0
+  fi
 
-  debconf-loadtemplate wipe-disks /tmp/fallback.template
+  # if [[ $OUTPUT =~ "security state is frozen" ]]; then
+  if [[ $OUTPUT =~ "command not found" ]]; then
 
-  while [ 1 ]; do
-    db_input critical wipe-disks/fallback || true
-    db_go
-    db_get wipe-disks/fallback
-  done
+    zenity --info --no-wrap --text="Secure Erase nicht durchgeführt: Frozen Security State!
+Laptop wird in Suspend versetzt. Bitte danach wieder aufwecken!
+Falls die SSD danach immer noch Frozen ist, muss die SSD im laufenden Betrieb hotplugged werden!"
 
-  # fallback to nwipe
-  nwipe -m zero --nogui --autonuke $BOOTDEV
-fi
+    systemctl suspend -i
 
-# finally ensure every disk was wiped
-nwipe -m verify --nogui --autonuke $BOOTDEV
+    zenity --info --text="Zweiter Versuch..."
 
-debconf-set partman-auto/disk "$BOOTDEV";
-debconf-set grub-installer/bootdev "$BOOTDEV";
+    OUTPUT=$(ata-secure-erase.sh -f $BOOTDEV 2>&1)
+    if [ $? -eq 0 ]; then
+      return 0
+    fi
+  fi
+}
+
+wipe_nwipe () {
+  zenity --warning --no-wrap --text="Secure Erase nicht durchgeführt!
+Fehler:
+$OUTPUT
+
+Fallback auf nwipe -m zero"
+  
+  OUTPUT=$(nwipe -m zero --nogui --autonuke $BOOTDEV 2>&1)
+
+  if [ $? -ne 0 ]; then
+    zenity --error --no-wrap --text="nwipe nicht durchgeführt!
+Fehler:
+$OUTPUT
+
+Installation wird abgebrochen, wenn SSD nicht bereits leer ist"
+  fi
+}
+
+check_all_zero () {
+  OUTPUT=$(nwipe -m verify --nogui --autonuke $BOOTDEV 2>&1)
+
+  if [ $? -ne 0 ]; then
+    zenity --error --no-wrap --text="SSD ist nicht leer!
+Fehler:
+$OUTPUT
+
+Installation wird abgebrochen"
+  fi
+
+  exit 1
+}
+
+configure_install () {
+  debconf-set partman-auto/disk "$BOOTDEV"
+  debconf-set grub-installer/bootdev "$BOOTDEV"
+}
+
+main () {
+  populate_device_list
+
+  case "$BOOTDEV" in 
+    *nvme*)
+      wipe_nvme;; 
+    *)
+      wipe_ata;;
+  esac
+
+  # fallback
+  if [ $? -ne 0 ]; then
+    wipe_nwipe
+  fi
+
+  check_all_zero
+  configure_install
+}
+
+main

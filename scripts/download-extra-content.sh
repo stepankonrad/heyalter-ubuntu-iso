@@ -10,6 +10,3 @@ log "Download Snaps"
 
 log "Download HEY-HILFE-Support-Handbuch.pdf"
 curl https://heyalter.com/wp-content/uploads/2021/02/HEY-HILFE-Support-Handbuch.pdf --output "$ISO_EXTRACTED_DIR/setup/HEY-HILFE-Support-Handbuch.pdf" --fail --location --max-time 60
-
-log "Download ata-secure-erase.sh"
-curl https://github.com/TigerOnVaseline/ata-secure-erase/raw/master/ata-secure-erase.sh --output "$ISO_EXTRACTED_DIR/setup/ata-secure-erase.sh" --fail --location --max-time 60
