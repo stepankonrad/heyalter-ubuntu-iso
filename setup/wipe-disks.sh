@@ -6,9 +6,11 @@ check_num_disks () {
   local NUM_DISKS=$(echo "$DISKDEV_LIST" | wc -l)
   if [ $NUM_DISKS -ne 1 ]; then
 
-    zenity --error --no-wrap --text="Anzahl der installierten Disks = $NUM_DISKS
+    zenity --warning --no-wrap --text="Anzahl der installierten Disks = $NUM_DISKS
 Es muss genau eine Disk verfügbar sein. Installierte Disks:
-$DISKDEV_LIST"
+$(ls -ogv /dev/disk/by-id/)
+
+Trotzdem fortfahren mit $BOOTDEV ?"
 
     exit 1
   fi
@@ -17,7 +19,7 @@ $DISKDEV_LIST"
 populate_device_list () {
   local USBDEV_LIST="$(mktemp)"
   list-devices usb-partition | sed "s/\(.*\)./\1/" > "$USBDEV_LIST"
-  local DISKDEV_LIST="$(list-devices disk | grep -vf "$USBDEV_LIST")"
+  DISKDEV_LIST="$(list-devices disk | grep -vf "$USBDEV_LIST")"
   check_num_disks
   BOOTDEV="$(echo "$DISKDEV_LIST" | head -n 1)"
 }
@@ -25,6 +27,23 @@ populate_device_list () {
 wipe_nvme () {
   OUTPUT=$(nvme format --ses=1 --force $BOOTDEV 2>&1)
   RC=$?
+  if [ $RC -eq 0 ]; then
+    return 0
+  fi
+
+  zenity --info --no-wrap --text="Secure Erase nicht durchgeführt: Eventuell Frozen Security State?
+Laptop wird in Suspend versetzt. Bitte danach wieder aufwecken!
+
+Fehler:
+$OUTPUT"
+
+  systemctl suspend -i
+
+  OUTPUT=$(nvme format --ses=1 --force $BOOTDEV 2>&1)
+  RC=$?
+  if [ $RC -eq 0 ]; then
+    return 0
+  fi
 
   return $RC
 }
@@ -39,12 +58,9 @@ wipe_ata () {
   if [[ $OUTPUT =~ "security state is frozen" ]]; then
 
     zenity --info --no-wrap --text="Secure Erase nicht durchgeführt: Frozen Security State!
-Laptop wird in Suspend versetzt. Bitte danach wieder aufwecken!
-Falls die SSD danach immer noch Frozen ist, muss die SSD im laufenden Betrieb hotplugged werden!"
+Laptop wird in Suspend versetzt. Bitte danach wieder aufwecken!"
 
     systemctl suspend -i
-
-    zenity --info --text="Zweiter Versuch..."
 
     OUTPUT=$(ata-secure-erase.sh -f $BOOTDEV 2>&1)
     RC=$?
@@ -63,7 +79,7 @@ $OUTPUT
 
 Fallback auf nwipe -m zero"
   
-  OUTPUT=$(nwipe -m zero --nogui --autonuke $BOOTDEV 2>&1)
+  OUTPUT=$(nwipe --nogui --verify=off --autonuke $BOOTDEV 2>&1)
 
   if [ $? -ne 0 ]; then
     zenity --error --no-wrap --text="nwipe nicht durchgeführt!
