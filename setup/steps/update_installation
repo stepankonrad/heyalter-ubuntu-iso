@@ -1,0 +1,38 @@
+#!/bin/bash
+# 
+# Wird aufgerufen von 080_call_setup_root_sh.sh
+#
+# 3 Abschnitte: 
+#
+# 1. Update der Pakete vom Proxy oder Internet
+# 2. Aufräumen von /etc/alternatives
+# 3. Installation der Snaps (lokal)
+#
+
+if [ $UID -ne 0 ]; then
+   exit $?
+fi
+
+logfile=$1
+
+# ------------------------------------------------------------------------------------
+
+echo -e "\nUpdate der Pakete\n"
+
+echo ""                 > $logfile
+apt update              2>&1 | tee -a $logfile
+apt-get dist-upgrade -y 2>&1 | tee -a $logfile
+apt autoremove -y       2>&1 | tee -a $logfile
+
+# ------------------------------------------------------------------------------------
+#
+
+Fehler=$(egrep -c '^E:|Fehler beim Holen' $logfile)
+
+if [ $Fehler -gt 0 ]; then
+   echo -e "\n Es gab $Fehler Fehler beim Update; Netzwerk??? \n " | tee -a $logfile
+   read a
+else
+   echo -e "\n Update ohne Fehler beendet \n" | tee -a $logfile
+   sleep 10
+fi

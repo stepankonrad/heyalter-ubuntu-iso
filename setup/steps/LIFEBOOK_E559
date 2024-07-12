@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Anpassungen für Fujitsu Lifebook E559
+#
+# Nur mit dem Kernel Parameter funktioniert das Keyboard nach Ausschalten/Einschalten
+# und es startet KEIN screenshot-tool nach Suspend
+#
+# --------------------------------------------------------------------------
+LOGFILE=$1
+
+echo -e "\nLIFEBOOK E559\n" | tee -a $LOGFILE
+#
+#  gefunden in https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2033271
+#
+sudo sed -ie 's,GRUB_CMDLINE_LINUX="",GRUB_CMDLINE_LINUX="i8042.nomux",' /etc/default/grub 2>&1 | tee -a $LOGFILE
+sudo update-grub 2>&1 | tee -a $LOGFILE

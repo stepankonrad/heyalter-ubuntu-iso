@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Icon=/opt/setup/add_files/setup.svg
+Name=Setup
+Exec=/opt/setup/setup.sh
+Terminal=false

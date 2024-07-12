@@ -1,0 +1,8 @@
+[org/gnome/shell/extensions/ding]
+start-corner='top-left'
+
+[org/gnome/shell]
+favorite-apps=['chromium_chromium.desktop', 'thunderbird_thunderbird.desktop', 'org.gnome.Nautilus.desktop', 'libreoffice-writer.desktop', 'libreoffice-calc.desktop', 'libreoffice-impress.desktop', 'org.gnome.Software.desktop']
+
+[org/gnome/desktop/background]
+picture-uri='file:///opt/heyalter/los_gehts.svg'

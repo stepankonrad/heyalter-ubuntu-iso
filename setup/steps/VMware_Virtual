@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+
+LOGFILE=$1
+
+# set text scaling factor & passende Cursor Größe
+
+gsettings set  org.gnome.desktop.interface text-scaling-factor 1.30
+gsettings set  org.gnome.desktop.interface cursor-size 48
+
+#
+# Installiere die VMWare Tools
+#
+NETZ="$(nmcli -g NAME c show --active)"
+
+#
+# Aufruf der Paketinstallation 
+#
+
+sudo apt install -y open-vm-tools open-vm-tools-desktop 2>&1 | tee -a $LOGFILE
+
+echo ""
+echo "Bitte Return eingeben"
+echo ""
+read a

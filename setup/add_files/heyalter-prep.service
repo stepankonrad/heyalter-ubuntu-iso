@@ -1,0 +1,18 @@
+[Unit]
+Description=Create user schule
+Before=display-manager.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/sbin/groupadd -g 1000 schule
+ExecStart=/usr/sbin/useradd -c "Heyalter Standarduser schule" -u 1000 -g 1000 -G adm,cdrom,sudo,dip,plugdev,users,lpadmin -m -s /bin/bash schule
+ExecStart=/usr/bin/passwd -d schule
+ExecStart=/usr/bin/chmod -R 750 /home/schule
+ExecStart=/usr/bin/cp /opt/setup/add_files/gdm3_custom.conf /etc/gdm3/custom.conf
+ExecStartPost=/usr/bin/rm /usr/lib/systemd/system/heyalter-prep.service /etc/systemd/system/multi-user.target.wants/heyalter-prep.service
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

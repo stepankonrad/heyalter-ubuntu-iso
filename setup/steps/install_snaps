@@ -1,0 +1,66 @@
+#!/bin/bash
+# 
+# Wird aufgerufen von 072_install_snaps.sh
+#
+# Installation der Snaps (lokal)
+#
+
+
+BINDIR=$1
+LOGFILE=$2
+
+if [ $UID -ne 0 ]; then
+   exit $?
+fi
+
+FEHLER=0
+
+# ------------------------------------------------------------------------------------
+
+echo -e "\nInstall snaps\n" | tee -a $LOGFILE
+
+# ------------------------------------------------------------------------------------
+#
+# Install snaps
+#
+
+cd $BINDIR/snaps
+
+# set arrays with all available snaps
+# mapfile -d '' SNAP_ASSERTS_ARR < <(find . -name "*.assert" -print0)
+# mapfile -d '' SNAPS_ARR < <(find . -name "*.snap" -print0)
+
+vorabliste="core18 core24"
+
+for snap2install in $vorabliste $(ls -1 *.assert)
+do
+    snapname="$( basename "$snap2install" .assert )"
+    echo -e "\n checking $snapname" | tee -a $LOGFILE
+    if ! snap list "$snapname" &> /dev/null
+    then   
+#
+# Hier kann evtl. spezielle Option für einen/mehrere snapnamen gesetzt werden
+#
+        options=""
+        echo -e "\nsnap ack & install $snapname $options" | tee -a $LOGFILE
+        snap ack     "$snapname".assert        2>&1  | tee -a $LOGFILE
+        snap install "$snapname".snap $options 2>&1  | tee -a $LOGFILE
+        if [ $? -ne 0 ]; then
+           let FEHLER=$FEHLER+1
+        fi
+    fi
+done
+
+if [ $FEHLER -ne 0 ]; then
+    echo -e "\n Anzahl Fehler ist $FEHLER; bitte prüfen" | tee -a $LOGFILE
+    read a
+else
+
+    echo ""
+    snap list 2>&1 | tee -a $LOGFILE
+    echo -e "\nAlle snaps installiert" | tee -a $LOGFILE
+    sleep 10
+fi
+
+# ------------------------------------------------------------------------------------
+#

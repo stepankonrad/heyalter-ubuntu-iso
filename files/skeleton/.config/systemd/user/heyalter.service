@@ -1,0 +1,12 @@
+[Unit]
+Description=lade heyalter.com bei erster internetverbindung
+StartLimitIntervalSec=5
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c "ping -c 1 google.com && chromium https://heyalter.com/hallo/76wekhw3we/ && systemctl --user disable heyalter.service"
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=graphical-session.target
