@@ -7,6 +7,7 @@ cd $(dirname "$0")
 log "Copying our $bindir/files to the ISO"
 cp $bindir/files/heyalter_*.yaml $ISO_EXTRACTED_DIR 
 cp $bindir/files/install_heyalter.sh $ISO_EXTRACTED_DIR 
+cp $bindir/files/wipe_disks.sh $ISO_EXTRACTED_DIR 
 mv "$ISO_EXTRACTED_DIR/boot/grub/grub.cfg" "$ISO_EXTRACTED_DIR/boot/grub/original_grub.cfg"
 cp $bindir/files/grub.cfg "$ISO_EXTRACTED_DIR/boot/grub/grub.cfg"
 

@@ -1,0 +1,29 @@
+autoinstall:
+  version: 1
+  early-commands:
+    - sudo bash /cdrom/wipe_disks.sh
+  source:
+    search_drivers: true
+    id: ubuntu-desktop
+  locale: de_DE.UTF-8
+  keyboard:
+    layout: de
+  storage:
+    match:
+      ssd: true
+    swap:
+      size: 4G
+    layout:
+      name: lvm
+      sizing-policy: all
+  codecs:
+    install: true
+  oem:
+    install: true
+  identity:
+    realname: 'Ubuntu User'
+    username: ubuntu
+    hostname: heyalter 
+    password: '$1$6hhnX.Sy$OwJx8tPOqHthrMP4fnt.w.'
+  late-commands:
+    - sudo bash /cdrom/install_heyalter.sh 2>&1 > /target/var/log/heyalter_installation.log

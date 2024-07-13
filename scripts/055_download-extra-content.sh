@@ -17,3 +17,7 @@ do
     mv "$ISO_EXTRACTED_DIR/setup/snaps"/${snap2install}_*.assert "$ISO_EXTRACTED_DIR/setup/snaps"/${snap2install}.assert
 done
 
+log "Download ata-secure-erase.sh"
+SECURE_ERASE_PATH=$ISO_EXTRACTED_DIR/ata-secure-erase.sh
+curl https://github.com/TigerOnVaseline/ata-secure-erase/raw/master/ata-secure-erase.sh --output "$SECURE_ERASE_PATH" --fail --location --max-time 60
+chmod +x $SECURE_ERASE_PATH
