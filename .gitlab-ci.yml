@@ -1,0 +1,16 @@
+stages:
+  - build_iso
+
+build_iso:
+  stage: build_iso
+  image: ubuntu:noble
+  script:
+    - ./build-local.sh
+    - "sha256sum artifacts/heyalter-*.iso >> artifacts/hashes.txt"
+    - "sha512sum artifacts/heyalter-*.iso >> artifacts/hashes.txt"
+  artifacts:
+    paths:
+      - artifacts/
+    expire_in: 24 hours
+
+
