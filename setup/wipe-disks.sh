@@ -77,9 +77,9 @@ wipe_nwipe () {
 Fehler:
 $OUTPUT
 
-Fallback auf nwipe -m zero"
+Fallback auf nwipe -m random"
   
-  OUTPUT=$(nwipe --nogui --verify=off --autonuke $BOOTDEV 2>&1)
+  OUTPUT=$(nwipe -m random --nogui --verify=off --autonuke $BOOTDEV 2>&1)
 
   if [ $? -ne 0 ]; then
     zenity --error --no-wrap --text="nwipe nicht durchgeführt!
