@@ -17,6 +17,7 @@ pushd "$ISO_EXTRACTED_DIR"
 
 rm -rf md5sum.txt
 find -type f -print0 | xargs -0 md5sum | tee md5sum.txt
+echo "mkisofs"
 
 log "mkisofs"
 chmod -R a+rx,a-w .

@@ -10,23 +10,23 @@ fi
 #
 # make sure it is run by root
 #
-if [ $UID -ne 0 ]; then
-   sudo "$bindir/$0" 
-   exit
-fi 
+# if [ $UID -ne 0 ]; then
+#    sudo "$bindir/$0" 
+#    exit
+# fi 
 
 #
 # install git only if necessary
 #
 if [ ! -e /usr/bin/git ]; then
-   apt update && apt install git -y
+   sudo apt update && sudo apt install git -y
 fi
 
 #
 # define git - related variables here to avoid problems 
 # from wrong directory ... 
 #
-git config --global --add safe.directory $bindir
+# git config --global --add safe.directory $bindir
 
 if [[ ! -v CI_COMMIT_SHORT_SHA ]]; then
    export CI_COMMIT_SHORT_SHA="$(git rev-parse --short HEAD)"
@@ -47,11 +47,11 @@ export ARTIFACTS_DIR="$bindir/artifacts"
 # clear all before starting new
 #
 if [ -d $BUILD_DIR ]; then
-   rm -rf $BUILD_DIR
+   sudo rm -rf $BUILD_DIR
 fi
 
 if [ -d "$ARTIFACTS_DIR" ]; then
-   rm -rf "$ARTIFACTS_DIR"
+   sudo rm -rf "$ARTIFACTS_DIR"
 fi
 
 mkdir -p $BUILD_DIR
@@ -69,4 +69,4 @@ $bindir/build.sh
 if [ -d /mnt/hgfs/HeyAlter ]; then
    cp "$ARTIFACTS_DIR"/*.iso  /mnt/hgfs/HeyAlter/
 fi
- 
+
