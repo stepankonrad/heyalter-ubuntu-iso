@@ -10,16 +10,16 @@ fi
 #
 # make sure it is run by root
 #
-# if [ $UID -ne 0 ]; then
-#    sudo "$bindir/$0" 
-#    exit
-# fi 
+if [ $UID -ne 0 ]; then
+   sudo "$bindir/$0" 
+   exit
+fi 
 
 #
 # install git only if necessary
 #
 if [ ! -e /usr/bin/git ]; then
-   sudo apt update && sudo apt install git -y
+   apt update && apt install git -y
 fi
 
 #
@@ -47,11 +47,11 @@ export ARTIFACTS_DIR="$bindir/artifacts"
 # clear all before starting new
 #
 if [ -d $BUILD_DIR ]; then
-   sudo rm -rf $BUILD_DIR
+   rm -rf $BUILD_DIR
 fi
 
 if [ -d "$ARTIFACTS_DIR" ]; then
-   sudo rm -rf "$ARTIFACTS_DIR"
+   rm -rf "$ARTIFACTS_DIR"
 fi
 
 mkdir -p $BUILD_DIR

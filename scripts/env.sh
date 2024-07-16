@@ -1,10 +1,10 @@
 #!/bin/bash
-# set -euo pipefail
+set -euo pipefail
 
-# if [ "$EUID" -ne 0 ]
-#   then echo "Please run as root"
-#   exit
-# fi
+if [ "$EUID" -ne 0 ]
+   then echo "Please run as root"
+   exit
+fi
 #
 # Version variables to avoid changes in several locations
 MAJOR="24"
