@@ -16,10 +16,10 @@ fi
 
 mkdir -p "$ISO_EXTRACTED_DIR/APT"
 SoftwareListe="default-jre geogebra gimp vlc mumble keepass2 audacity geany obs-studio openscad krita krita-l10n vim pwgen curl youtubedl-gui gparted inkscape guvcview ksnip"
+ExtraSoftware="open-vm-tools open-vm-tools-desktop "
 
 apt-get install -d -y $SoftwareListe -o Dir::Cache::Archives="$ISO_EXTRACTED_DIR/APT"
-
-# chown -R $USER "$ISO_EXTRACTED_DIR/APT"
+apt-get install -d -y $ExtraSoftware -o Dir::Cache::Archives="$ISO_EXTRACTED_DIR/APT"
 
 cat << EOD > $ISO_EXTRACTED_DIR/APT/install.sh
 #!/bin/bash

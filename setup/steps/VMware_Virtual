@@ -17,7 +17,13 @@ NETZ="$(nmcli -g NAME c show --active)"
 # Aufruf der Paketinstallation 
 #
 
-sudo apt install -y open-vm-tools open-vm-tools-desktop 2>&1 | tee -a $LOGFILE
+for paket in open-vm-tools open-vm-tools-desktop 
+do
+
+   apt-get install \$paket -y --no-download -o Dir::Cache::Archives=/opt/APT/
+
+done
+
 
 echo ""
 echo "Bitte Return eingeben"
