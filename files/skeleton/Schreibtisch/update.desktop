@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Icon=/opt/setup/add_files/software_update.svg
+Name=Update_Pakete
+Exec=/opt/setup/steps/070_update_installation.sh
+Terminal=false

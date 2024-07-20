@@ -7,7 +7,6 @@
 #
 # Check Netzwerk, sonst Abbruch
 #
-
 if [ -z "$(nmcli -g NAME c show --active)" ]; then
    
    zenity --error --icon=network-error --text="Kein Netzwerk vorhanden; breche hier ab"
@@ -15,8 +14,12 @@ if [ -z "$(nmcli -g NAME c show --active)" ]; then
 
 fi
 
+bindir="$(dirname $0)"
+
 logfile="/tmp/update_installation_$$.log"
 
-gnome-terminal --wait -- sudo $BINDIR/steps/update_installation  $logfile 
+gnome-terminal --wait -- sudo $bindir/update_installation  $logfile 
 
-cat $logfile >> $LOGFILE
+if [ ! -z "$LOGFILE" ]; then
+   cat $logfile >> $LOGFILE
+fi
