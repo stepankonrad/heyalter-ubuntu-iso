@@ -18,8 +18,9 @@ fi
 #
 rm ~/Schreibtisch/setup.desktop
 rm ~/Schreibtisch/cleanup.desktop
+rm ~/Schreibtisch/update.desktop
 
-sudo rm /etc/skel/Schreibtisch/setup.desktop /etc/skel/Schreibtisch/cleanup.desktop
+sudo rm /etc/skel/Schreibtisch/setup.desktop /etc/skel/Schreibtisch/cleanup.desktop /etc/skel/Schreibtisch/update.desktop
 
 #
 # Screensaver und Lock-Screen reaktivieren
