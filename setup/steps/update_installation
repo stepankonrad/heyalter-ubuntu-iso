@@ -1,12 +1,7 @@
 #!/bin/bash
 # 
-# Wird aufgerufen von 080_call_setup_root_sh.sh
-#
-# 3 Abschnitte: 
-#
-# 1. Update der Pakete vom Proxy oder Internet
-# 2. Aufräumen von /etc/alternatives
-# 3. Installation der Snaps (lokal)
+# Wird aufgerufen von _update_installation.sh
+# Schreibt eigenes temp. Logfile, damit es auf Fehler untersucht werden kann.
 #
 
 if [ $UID -ne 0 ]; then
