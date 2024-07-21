@@ -8,6 +8,7 @@ autoinstall:
   locale: de_DE.UTF-8
   keyboard:
     layout: de
+  timezone: Europe/Berlin
   storage:
     match:
       ssd: true

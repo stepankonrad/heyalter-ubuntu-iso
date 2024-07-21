@@ -26,7 +26,6 @@ fi
 # define git - related variables here to avoid problems 
 # from wrong directory ... 
 #
-# git config --global --add safe.directory $bindir
 
 if [[ ! -v CI_COMMIT_SHORT_SHA ]]; then
    export CI_COMMIT_SHORT_SHA="$(git rev-parse --short HEAD)"
@@ -61,12 +60,3 @@ mkdir -p $BUILD_DIR
 #
 
 $bindir/build.sh
-
-#
-# Addon für meine Testumgebung (Peter)
-#
-
-if [ -d /mnt/hgfs/HeyAlter ]; then
-   cp "$ARTIFACTS_DIR"/*.iso  /mnt/hgfs/HeyAlter/
-fi
-

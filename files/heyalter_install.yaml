@@ -4,6 +4,7 @@ autoinstall:
     search_drivers: true
     id: ubuntu-desktop
   locale: de_DE.UTF-8
+  timezone: Europe/Berlin
   keyboard:
     layout: de
   storage:
