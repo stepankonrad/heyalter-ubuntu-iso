@@ -22,8 +22,19 @@ do
 
    sudo apt-get install $paket -y --no-download -o Dir::Cache::Archives=/opt/APT/
 
-done
+done 
 
+#
+# workaround for bug in shared devices
+#
+if [ $(grep -c vmhgfs-fuse /etc/fstab) -eq 0 ]; then
+   cat >> /etc/fstab << EOD
+#
+# workaround for bug in shared devices
+# 
+vmhgfs-fuse   /mnt/hgfs    fuse    defaults,allow_other,_netdev    0    0
+EOD
+fi
 
 echo ""
 echo "Bitte Return eingeben"
