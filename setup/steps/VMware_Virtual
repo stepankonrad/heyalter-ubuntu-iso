@@ -20,7 +20,7 @@ NETZ="$(nmcli -g NAME c show --active)"
 for paket in open-vm-tools open-vm-tools-desktop 
 do
 
-   sudo apt-get install $paket -y --no-download -o Dir::Cache::Archives=/opt/APT/
+   sudo apt-get install $paket -y --no-download -o Dir::Cache::Archives=/opt/APT/ 2>&1 >> "$LOGFILE"
 
 done 
 
@@ -28,6 +28,7 @@ done
 # workaround for bug in shared devices
 #
 if [ $(grep -c vmhgfs-fuse /etc/fstab) -eq 0 ]; then
+   echo -e "\n Installing workaround for shared devices \n" >> "$LOGFILE"
    cat >> /etc/fstab << EOD
 #
 # workaround for bug in shared devices
