@@ -10,7 +10,7 @@ FEHLER=0
 # Abfrage BIOS ja/nein (nein - RC=0)
 #
 zenity --question --default-cancel \
-  --text="Microsoft Surface Laptop erkannt. Hat das Gerät ein BIOS-Passwort (default=nein)? Ausserdem mit rechter Maustaste auf den Bildschirmhintergrund klicken, [Anzeigeeinstellungen] wählen und Skalieren auf 100% ändern " 
+  --text="Microsoft Surface Laptop erkannt. Hat das Gerät ein BIOS-Passwort (default=nein)?\nAusserdem mit rechter Maustaste auf den Bildschirmhintergrund klicken, [Anzeigeeinstellungen] wählen und Skalieren auf 100% ändern " 
 BIOS=$?
 
 echo -e "\nSurface Laptop\n" | tee -a $LOGFILE
@@ -21,58 +21,38 @@ gsettings set  org.gnome.desktop.interface text-scaling-factor 1.50
 gsettings set  org.gnome.desktop.interface cursor-size 48
 
 #
-# Da die Surface Pakete nicht via HeyAlter Setup erreichbar sind wird die Verbindung unterbrochen und Freifunk genutzt
-#
-NETZ="$(nmcli -g NAME c show --active)"
-
-if [ "$NETZ" == "HeyAlter Setup" ]; then
-   nmcli c delete "$NETZ"
-   sleep 5
-   nmcli dev wifi connect 'Freifunk'
-fi 
-
-if [ -z "$(nmcli -g NAME c show --active)" ]; then
-
-   zenity --error --icon=network-error --text="Kein Netzwerk vorhanden; breche hier ab"
-   echo "Kein Netzwerk vorhanden; breche hier ab" | tee -a $LOGFILE
-   exit 2
-
-fi
-
-#
 # Aufruf der Paketinstallation für den Surface Kernel
 #
 #
 # Gefunden in https://github.com/linux-surface/linux-surface/
 #
-
-
 #
 # First you need to import the keys we use to sign packages.
 #
 
-wget -qO - https://raw.githubusercontent.com/linux-surface/linux-surface/master/pkg/keys/surface.asc |\
-       	gpg --dearmor | sudo dd of=/etc/apt/trusted.gpg.d/linux-surface.gpg
+gpg --dearmor < /opt/APT/surface.asc | sudo dd of=/etc/apt/trusted.gpg.d/linux-surface.gpg
 #
 # After this you can add the repository configuration and update APT.
 #
-
-echo "deb [arch=amd64] https://pkg.surfacelinux.com/debian release main" 	|\
-      sudo tee /etc/apt/sources.list.d/linux-surface.list
+sudo cp /opt/APT/linux-surface.list /etc/apt/sources.list.d/linux-surface.list
 
 sudo apt update 2>&1 | tee -a $LOGFILE
 
 #
 # Now you can install the linux-surface kernel and its dependencies.
 #
+for paket in linux-image-surface linux-headers-surface libwacom-surface iptsd
+do
 
-sudo apt install -y linux-image-surface linux-headers-surface libwacom-surface iptsd 2>&1 | tee -a $LOGFILE
+   sudo apt-get install $paket -y --no-download -o Dir::Cache::Archives=/opt/APT/ 2>&1 | tee -a  "$LOGFILE"
+
+done 
 
 #
 # Wenn BIOS-PW gesetzt ist, muss dieses Zusatzpaket installiert werden
 #
 if [ $BIOS -eq 0 ]; then
-   sudo apt install -y linux-surface-secureboot-mok 2>&1 | tee -a $LOGFILE
+   sudo apt-get install -linux-surface-secureboot-mok -y --no-download -o Dir::Cache::Archives=/opt/APT/ 2>&1 | tee -a  "$LOGFILE"
 fi
 
 #

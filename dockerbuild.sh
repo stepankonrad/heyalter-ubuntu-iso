@@ -3,15 +3,18 @@
 # Vorbereitung (falls notwendig)
 # Docker installieren
 #
-if [ -z "$(which docker)" ]; then
-   sudo apt install docker -y
+if [ "$(which docker)" == ""  ]; then
+   sudo apt install docker.io -y
 fi
 #
 # aktuellen User in Docker Gruppe hinzufügen
 # um Aufruf ohne root-Rechte zu ermöglichen
+# Vorsicht: Aufruf usermod -G muss alle Gruppen nennen,
+#           daher die Zwischenabfrage
 #
 if [ "$(id | grep -c docker)" -ne 1 ]; then
-   sudo usermod -G docker $USER
+   groups=$(id -nG | tr " " ",")
+   sudo usermod -G "$groups",docker $USER
    cat << EOD
 
 -------------------------------------------------------------------------
