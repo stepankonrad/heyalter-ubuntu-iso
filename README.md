@@ -37,7 +37,7 @@ The official release of the heyalter ubuntu
 
 ## Installation procedure proposal
 
-- [Installation procedure proposal {german}](install_proposal.md)
+[./Documentation/Installation.pdf](./Documentation/Installation.pdf)
 
 ## Reenable the Welcome page on the first boot
 
@@ -50,29 +50,7 @@ systemctl enable --user heyalter.service
 
 ## Building the image
 
-You can use Docker or run locally.
-
-```bash
-git clone https://gitli.stratum0.org/heyalter/heyalter-ubuntu-iso.git
-cd heyalter-ubuntu-iso
-docker run -it --rm -v "${PWD}":/heyalter -w "/heyalter" --name heyalter-iso ubuntu:jammy ./build-local.sh
-
-OR simply
-
-./build-local.sh
-```
-
-The finished build artifacts can be found inside the `artifacts` folder.
-
-If you wish to debug a build, you might just start a docker container with the default bash and execute
-`./build-local.sh` manually inside it. This allows you to inspect the intermediate files when a build error occurrs.
-Furthermore you can manually execute the build steps by executing the appropriate script in the `scripts`-Folder, so
-you don't need to start the build from scratch on little changes.
-Execute the following command, instead of the above docker command:
-
-```bash
-docker run -it --rm -v ${PWD}:/heyalter -w "/heyalter" --name heyalter-iso ubuntu:jammy
-```
+[./Documentation/imagebuild.pdf](./Documentation/imagebuild.pdf)
 
 ## Help for plain Ubuntu Installations
 
