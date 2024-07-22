@@ -29,7 +29,7 @@ done
 #
 if [ $(grep -c vmhgfs-fuse /etc/fstab) -eq 0 ]; then
    echo -e "\n Installing workaround for shared devices \n" >> "$LOGFILE"
-   cat >> /etc/fstab << EOD
+   cat << EOD  | sudo tee -a /etc/fstab
 #
 # workaround for bug in shared devices
 # 
